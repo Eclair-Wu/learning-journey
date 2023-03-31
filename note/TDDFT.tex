@@ -1,0 +1,50 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,braket,booktabs,longtable}
+\title{Note of TDDFT}
+\author{Yixuan Wu}
+\begin{document}
+\maketitle
+\section{backgrounds}
+The solution of the time-dependent Schr\"odinger equation is
+\begin{equation}
+    \Psi(t)=\hat{U}(t,t_0)\Psi_0
+\end{equation}
+the time evolution operator $\hat{U}(t,t_0)$ has two properties, compostion property and unitary
+\begin{gather}
+    \hat{U}(t_2,t_0)=\hat{U}(t_2,t_1)\hat{U}(t_1,t_0)\\
+    {\hat{U}}^\dagger(t,t_0)\hat{U}(t,t_0)=1
+\end{gather}
+If the Hamiltonian is independent of time, the operator is
+\begin{equation}
+    \hat{U}(t,t_0)=e^{-i\hat{H}(t-t_0)}
+\end{equation}
+For time-dependent perturbation theory
+\begin{gather}
+    \hat{H}(t)=\hat{H}_0+\hat{H}_1(t)\\
+    \hat{U}(t,t_0)=e^{-i\hat{H}(t-t_0)}\hat{U}_1(t,t_0)
+\end{gather}
+from the time-dependent SE we can derive
+\begin{gather}
+    i\\hat{U}(t,t_0)=e^{-i\hat{H}(t-t_0)}\hat{U}_1(t,t_0)
+\end{gather}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}

@@ -1,0 +1,1642 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,braket,booktabs,longtable}
+\title{Eletronic Structure Theory Notes (WFT)}
+\author{Yixuan Wu}
+\begin{document}
+\maketitle
+\section{Basic Concepts of Eletronic Structure}
+Main interest is findng approximate solutions of the non-relativistic time-independent Schr\"odinger equation
+\begin{equation}
+    \Hat{H}\ket{\Phi}=E\ket{\Phi}
+\end{equation}
+For N electrons and M nuclei system, the Hamiltonian is (in atomic units)
+\begin{equation}
+    \begin{split}
+        \Hat{H}= & -\sum_{i=1}^{N}\frac{1}{2}\nabla_{i}^{2}-\sum_{A=1}^{M}\frac{1}{2M_A}\nabla_{A}^{2}
+-\sum_{i=1}^{N}\sum_{A=1}^{M}\frac{Z_A}{|\mathbf{r}_i-\mathbf{R}_A|}\\ &+\sum_{i=1}^{N}\sum_{j>i}^{N}\frac{1}{|\mathbf{r}_i-\mathbf{r}_j|}
++\sum_{A=1}^{M}\sum_{B>A}^{M}\frac{Z_{A}Z_{B}}{|\mathbf{R}_A-\mathbf{R}_B|}
+    \end{split}
+\end{equation}
+\subsection{Born-Oppenheimer Approximation}
+Nuclei are much heavier than electrons, they move more slowly. So one can consider the electrons
+are moving in the field of fixed nuclei. As the result, the second term of (2) can be neglected
+and the last term can be considered as a constant. The remaining part is called eletronic 
+Hamiltonian, it describes the motion of N electrons in the field of M point charges.
+\begin{equation}
+    \begin{split}
+        \Hat{H}_{elec}=&-\sum_{i=1}^{N}\frac{1}{2}\nabla_i^2-\sum_{i=1}^{N}\sum_{A>i}^{M}
+        \frac{Z_A}{r_{i,A}}+\sum_{i=1}^{N}\sum_{i>j}^{N}\frac{1}{r_{ij}}\\
+        &(r_{i,A}=|\mathbf{r}_i-\mathbf{R}_A|, r_{ij}=|\mathbf{r}_i-\mathbf{r}_j|)    
+    \end{split}
+\end{equation}
+Now the solution of Schr\"odinger equation is electroinc wave function, it \textbf{explicitly} 
+depends on $\{r_i\}$ and \textbf{parametrically} depends on $\{R_A\}$.  
+\begin{align}
+        &\Hat{H}_{elec}\ket{\Phi_{elec}}=E_{elec}\ket{\Phi_{elec}}\\
+        &\Phi_{elec}=\Phi_{elec}(\{\mathbf{r}_i\},\{\mathbf{R}_A\})\\
+        &E_{elec}=E_{elec}(\{\mathbf{R}_A\})
+\end{align}
+If we consider nuclear Hamiltonian to describe the vibration, rotation, and translation of a molecule, 
+the part of electrons can be replaced by their average valuse for the same
+reason in Born-Oppenheimer Approximation.
+\begin{align}
+    \Hat{H}_{nucl}&=-\sum_{A=1}^{M}\frac{1}{2M_A}\nabla_{A}^{2}+E_{elec}+\sum_{A=1}^{M}\sum_{B>A}^{M}\frac{Z_{A}Z_{B}}{|\mathbf{R}_A-\mathbf{R}_B|} \notag \\
+    &=-\sum_{A=1}^{M}\frac{1}{2M_A}\nabla_{A}^{2}+E_{tot}(\{\mathbf{R}_A\})
+\end{align}
+The total energy $E_{tot}(\{R_A\})$ provides a potential for nuclear motion. Thus the nuclei in the Born-Oppenheimer Approximation
+move on a potential energy surface obtained by sloving the electronic equation. And the total wave function in this approximation
+is
+\begin{equation}
+    \Phi(\{\mathbf{r}_i\},\{\mathbf{R}_A\})=\Phi_{elec}(\{\mathbf{r}_i\},\{\mathbf{R}_A\})\Phi_{nucl}(\{\mathbf{R}_A\})
+\end{equation}
+\subsection{Orbitals,Basis,and Slater Determinants}
+\subsubsection{Spin and spatial orbitals}
+We define an orbital as a wave function for as single particle, an electron. A \textbf{spatial orbital} $\psi_i(\mathbf{r})$
+is a function of the position vector \textbf{r} and describes the spatial distribution of an electron. Spatial 
+molecular orbitals will usually be assumed to from an orthonormal set
+\begin{equation}
+    \int\,d\mathbf{r}\psi_i^*(\mathbf{r})\psi_j(\mathbf{r})=\delta_{ij} 
+\end{equation}
+If the set were complete, then any  arbitary function could be exactly expanded as
+\begin{equation}
+    f(\mathbf{r})=\sum_{i=1}^{\infty}a_i\psi_i(\mathbf{r})
+\end{equation}
+However, we will only have a finite set $\{\psi_i|i=1,2,\ldots,N\}$ in practice, it will only span a certain region of the comlpete space.
+\\The spatial orbital is not complete to describe an electron because of
+the neglection of spin. We introduce two spin functions $\alpha(\omega)$ and $\beta(\omega)$, corresponding
+to spin up and down. They are functions of an unspecified spin variable $\omega$ and they satisfy
+\begin{equation}
+    \begin{split}
+        \int\,d{\omega}\alpha^*(\omega)\alpha(\omega)&=\int\,d{\omega}\beta^*(\omega)\beta(\omega)=1\\
+        \bra{\alpha}\ket{\alpha}&=\bra{\beta}\ket{\beta}=1\\
+        \int\,d{\omega}\alpha^*(\omega)\beta(\omega)&=\int\,d{\omega}\alpha^*(\omega)\beta(\omega)=0\\
+        \bra{\alpha}\ket{\beta}&=\bra{\beta}\ket{\alpha}=1\\
+    \end{split}
+\end{equation}
+In this formalism an electron is described by spatial coordinates and spin corrdinate, we denotes
+these corrdinates by $\mathbf{x}=\{\mathbf{r},\omega\}$. From a spatial orbital, it can generate two
+different spin orbital. Given a set of N spatial orbitals, they can generate a set of 2N spin orbitals, and
+they are also orthonormal.
+\begin{equation}
+    \begin{split}
+        \chi_{2i-1}(\mathbf{x})&=\psi_i(\mathbf{r})\alpha(\omega)\\
+        \chi_{2i}(\mathbf{x})&=\psi_i(\mathbf{r})\beta(\omega)\\
+    \end{split}
+\end{equation}
+\begin{equation}
+    \int\,d\mathbf{x}\chi_i^*(\mathbf{x})\chi(\mathbf{x})=\delta_{ij} 
+\end{equation}
+\subsubsection{Hartree product}
+If we consider a system of N electrons and neglect the interaction between electrons, the Hamiltonian can be written as the sum
+of one-electron Hamiltonian. So the wave function is a simple product of spin orbital for each electron and the energy is the sum
+of spin orbitals energies. The product is called Hartree product.
+\begin{align}
+    \Hat{H}&=\sum_{i=1}^{N}\Hat{h}_i\\
+    \Hat{h}_i\chi(\mathbf{x}_i)&=\epsilon_i\chi(\mathbf{x}_i)\\
+    \Psi(\mathbf{x}_1,\mathbf{x}_2,\ldots,\mathbf{x}_N)&=\chi_1(\mathbf{x}_1)\chi_2(\mathbf{x}_1)\ldots\chi_{2N}(\mathbf{x}_N)\\
+    E&=\epsilon_1+\epsilon_2+\cdots+\epsilon_N
+\end{align}
+\subsubsection{Slater determinants}
+There is an independent postulate in quantum mechanics called the \textbf{antisymmetry principle}
+A many-electron wave function must be antisymmetric with respect to the interchange of
+the coordinate \textbf{x} of any two electrons.
+\begin{equation}
+    \Psi(\ldots,\mathbf{x}_i,\ldots,\mathbf{x}_j,\ldots)=-\Psi(\ldots,\mathbf{x}_j,\ldots,\mathbf{x}_i,\ldots)
+\end{equation}
+However, the Hartree product does not satisfy this principle. We can antisymmetrized wave functions with
+a determinant, and the new wave function is called Slater determinant.
+\begin{equation}
+    \Psi(\mathbf{x}_1,\mathbf{x}_2,\ldots,\mathbf{x}_N)={N!}^{-1/2}
+    \begin{vmatrix}
+        \chi_1(\mathbf{x}_1) & \chi_2(\mathbf{x}_1) & \cdots & \chi_{2N}(\mathbf{x}_1)\\
+        \chi_1(\mathbf{x}_2) & \chi_2(\mathbf{x}_2) & \cdots & \chi_{2N}(\mathbf{x}_2)\\
+        \vdots & \vdots & \ddots & \vdots\\
+        \chi_1(\mathbf{x}_N) & \chi_2(\mathbf{x}_N) & \cdots & \chi_{2N}(\mathbf{x}_N)\\
+    \end{vmatrix}        
+\end{equation}
+The factor ${N!}^{-1/2}$ is a normalization factor. The rows of an determinant are labeled
+by electrons. Interchanging any two rows changes the sign of the determinant, so it satisfies 
+the antisymmetry principle. To make it more convenient to write the determinant, (19)
+can be shortened to
+\begin{align}
+    \Psi(\mathbf{x}_1,\mathbf{x}_2,\ldots,\mathbf{x}_N)&=\ket{\chi_1(\mathbf{x}_1)\chi_2(\mathbf{x}_2)\cdots\chi_{2N}(\mathbf{x}_N)}\\ 
+    \Psi(\mathbf{x}_1,\mathbf{x}_2,\ldots,\mathbf{x}_N)&=\ket{\chi_1\chi_2\cdots\chi_{2N}}
+\end{align}
+A Slater determinant incorporates \textbf{exchange correlation}, which means the motion of two
+electrons with parallel spins is correlated. We consider a two-electron system to see its effect.
+\begin{equation}
+    \Psi(\mathbf{x}_1,\mathbf{x}_2)=\frac{1}{\sqrt{2}}\ket{\chi_1(\mathbf{x}_1)\chi_2(\mathbf{x}_2)}
+\end{equation}
+Let $P(\mathbf{r}_1,\mathbf{r}_2)d\mathbf{r}_1d\mathbf{r}_2$ be the probablity of finding electron 1 in
+$d\mathbf{r}_1$ at $\mathbf{r}_1$ and simultaneously electron 2 in $d\mathbf{r}_2$ at $\mathbf{r}_2$
+\begin{equation}
+    \begin{split}
+        P(\mathbf{r}_1,\mathbf{r}_2)&=\int\,d\omega_1d\omega_2|\Psi|^2\\
+        &=\frac{1}{2}\left[|\psi_1(\mathbf{r}_1)|^2|\psi_2(\mathbf{r}_2)|^2+|\psi_1(\mathbf{r}_2)|^2|\psi_2(\mathbf{r}_1)|^2\right]
+    \end{split}    
+\end{equation}
+The first term means electron 1 occupies $\psi_1$ and electron occupies $psi_2$, the second
+term means electron 1 occupies $\psi_2$ and electron occupies $psi_1$. Since the electrons are
+indistinguishable, the probablity is the average of the two term. Thus the motion of two electrons
+is uncorrelated. However, if two electrons have the same spin, the probablity becomes
+\begin{equation}
+    \begin{split}
+        P(\mathbf{r}_1,\mathbf{r}_2)=&\frac{1}{2}\left[|\psi_1(\mathbf{r}_1)|^2|\psi_2(\mathbf{r}_2)|^2+|\psi_1(\mathbf{r}_2)|^2|\psi_2(\mathbf{r}_1)|^2\right]\\
+        &-\left[\psi_1^*(\mathbf{r}_1)\psi_2(\mathbf{r}_1)\psi_2^*(\mathbf{r}_2)\psi_1(\mathbf{r}_2)
+        +\psi_1(\mathbf{r}_1)\psi_2^*(\mathbf{r}_1)\psi_2(\mathbf{r}_2)\psi_1^*(\mathbf{r}_2)\right]
+    \end{split}
+\end{equation}
+with an extra cross term making the probablities correlated. Note that $P(\mathbf{r}_1,\mathbf{r}_1)=0$, which
+means two electrons can not exist at the same point in space. It's called \textbf{Fermi hole}. In summary, the motion
+of electrons with parallel spins is correlated and with opposite spins is not.
+\subsubsection{Basic Hartree-Fock approximation}
+The Hartree-Fock approximation is also called the molecular orbital approximation. The simple picture, that 
+chemists carry around in their heads, of electron occupying orbitals is in reality the Hartree-Fock approximation.
+It plays an important role in quantum chemistry as a starting point for more accurate methods. We just give an brief
+introduction here.\\
+We can simplify the full electroinc Hamiltonian under this approximation and generate a eigenvalue equation called
+Hartree-Fock equation
+\begin{equation}
+    \Hat{f}(i)\chi(\mathbf{x}_i)=\epsilon\chi(\mathbf{x}_i)
+\end{equation}
+where $f(i)$ is an effective one electron operator called Fock operator. It has the form
+\begin{equation}
+    \Hat{f}(i)=-\frac{1}{2}\nabla_i^2-\sum_{A=1}^{M}\frac{Z_A}{r_{iA}}+\Hat{v}_{HF}(i)
+\end{equation}
+and $\Hat{v}_{HF}(i)$ is the average potential experienced by the ith electron due to the other
+electrons. So the essence of Hartree-Fock approximation is to repalce the complicated many-electron
+problem by a one-electron problem in which \textbf{electron-electron repulsion is treated in an average way}.
+$\Hat{v}_{HF}(i)$ depends on the spin orbitals and the other electrons, so the Hartree-Fock equation
+is nonlinear and must be solved iteratively. The procedure for solving this equation is called the
+self-consistent-field (SCF) method.\\
+By making an initial guess of the spin orbitals, one can calculate $\Hat{v}_{HF}(i)$ and solve the
+Hartree-Fock equations. The solutions will provide a new set of spin orbitals and we can use them to obtain
+new $\Hat{v}_{HF}(i)$ until self-consistency is reached. The final solution of the Hartree-Fock equation yields
+a set of orthonormal spin orbitals with orbital energies. The N spin orbitals with lower energies called
+\textbf{occupied} or \textbf{hole} spin orbitals and the remaining part is called \textbf{virtual},\textbf{unoccupied}
+or \textbf{particle} spin orbitals.\\
+In principle, there are an infinite number of virtual spin orbitals because of a infinite set of spatial basis
+functions. However, in practice we use a finite set of functions $\{\phi_i|i=1,2,\ldots,K\}$ to generate 2K spin
+orbitals. This leads to a set of N occupied orbitals and 2N-K unoccupied orbitals. The more comlpete basis set we
+use, the lower energy can reach until a limit called Hartree-Fock limit.
+\subsubsection{The minimal basis $H_2$ model}
+The model we use to illustrate many methods and concepts in quantum chemistry is minimal basis
+MO—LCAO description of $H_2$. MO—LCAO means molecular orbitals are formed as a linear combination of 
+atomic orbitals as the atoms approach. And in this model, each hydrogen atom has a 1s atomic orbital $\phi_1$
+and $\phi_2$, they have the form
+\begin{equation}
+    \phi(\mathbf{r}-\mathbf{R})={(\zeta^3/\pi)}^{1/2}e^{-\zeta|\mathbf{r}-\mathbf{R}|}
+\end{equation}
+This is an example of \textbf{Slater orbital} but we are concerned mostly with \textbf{Gaussian orbitals}, which lead to 
+a simple integral evaluations than Slater orbitals. And 1s Gaussian orbital has the form
+\begin{equation}
+    \phi(\mathbf{r}-\mathbf{R})={(2\alpha/\pi)}^{3/4}e^{-\alpha|\mathbf{r}-\mathbf{R}|}
+\end{equation}
+The two atomic orbitals are normalized but not orthogonal,they will overlap and the overlap integral
+is
+\begin{equation}
+    S_{12}=\int\,d\mathbf{r}\phi_1^*(\mathbf{r})\phi_2(\mathbf{r})=\int\,d\mathbf{r}\phi_2^*(\mathbf{r})\phi_1(\mathbf{r})
+\end{equation}
+From $\phi_1$ and $\phi_2$, we can generate two molecular orbitals by linear combination, and they are aslo
+orthonormal.
+\begin{align}
+    \psi_1=\frac{1}{\sqrt{(2+S_{12})}}(\phi_1+\phi_2)\\
+    \psi_2=\frac{1}{\sqrt{(2-S_{12})}}(\phi_1-\phi_2)
+\end{align}
+In fact, to obtain the exact molecular orbitals of $H_2$, we should use an infinite number of basis functions to expand
+the molecular orbitals (in practice we use a finite set). Given two such molecular orbitals $\psi_1$ and $\psi_2$, we can
+generate four spin orbitals
+\begin{equation}
+    \psi_i(\mathbf{r})=\sum_{\mu=1}^{N}C_{\mu i}\phi_\mu(\mathbf{r})\\
+\end{equation}\
+\begin{equation}
+    \begin{split}
+        \chi_1(\mathbf{x})=\psi_1({\mathbf{r}})\alpha(\omega)\\
+        \chi_2(\mathbf{x})=\psi_1({\mathbf{r}})\beta(\omega)\\
+        \chi_3(\mathbf{x})=\psi_2({\mathbf{r}})\alpha(\omega)\\
+        \chi_4(\mathbf{x})=\psi_2({\mathbf{r}})\beta(\omega)
+    \end{split}
+\end{equation}
+and a simple notation indicates spin orbitals
+\begin{equation}
+    \begin{matrix}
+        \chi_1\equiv\psi_1\equiv1 &  \chi_2\equiv\bar{\psi_1}\equiv\bar{1}\\
+        \chi_3\equiv\psi_2\equiv2 &  \chi_4\equiv\bar{\psi_2}\equiv\bar{2}
+    \end{matrix}
+\end{equation}
+As might be expected, $\chi_1$ and $\chi_2$ are degenerate and have lower energy corresponding to a
+bonding situation. So the Hartree-Fock ground state in this model is
+\begin{equation}
+    \ket{\Psi_0}=\ket{\chi_1\chi_2}=\ket{1\bar{1}}
+\end{equation}
+\subsubsection{Excited determinants}
+If we use a finite set of functions $\{\phi_i|i=1,2,\ldots,K\}$ to generate 2K spin
+orbitals, the Hartree-Fock ground state for N electron system is
+\begin{equation}
+    \ket{\Psi_0}=\ket{\chi_1\chi_2\cdots\chi_N}
+\end{equation}
+This single determinant is a good approximation to the ground state. However, it is only one of many
+determinants that could be formed from N electrons and 2K spin orbitals, the total number of determinants
+is
+\begin{equation}
+    \binom{2K}{N}=\frac{(2K)!}{N!(2K-N)!}
+\end{equation}
+A convenient way to describe these other determinants is to consider the Hartree-Fock ground state as
+a reference state and classify other possible determinants by how they differ from the reference
+state. These other determinants can be taken to represent approximate excited state of the system.
+A single excited determinant is one in which an electron, which occupied $\chi_a$ in ground state, has
+been promoted to an unoccupied spin orbital
+\begin{equation}
+    \ket{\Psi^r_a}=\ket{\chi_1\chi_2\cdots\chi_r\cdots\chi_N}
+\end{equation}
+A doubly excited determinant is one in which electrons have been excited from $\chi_a$ and $\chi_b$ to
+$\chi_r$ and $\chi_s$
+\begin{equation}
+    \ket{\Psi^{rs}_{ab}}=\ket{\chi_1\chi_2\cdots\chi_r\chi_s\cdots\chi_N}
+\end{equation}
+Other determinants can thus be classified as singly, doubly, triply, quardruply, \ldots, N-tuply excited
+states. The importance of these determinants as approximate representations of the true states of the
+system diminishes in the above order.
+\subsubsection{Form of the exact wave function and configuration interaction}
+Suppose we have a complete set of functions to consider excited states. Any function of a single variable
+can be exactly expanded as
+\begin{equation}
+    \Psi(\mathbf{x}_1)=\sum_{i}a_i\chi_i(\mathbf{x}_1)
+\end{equation}
+and a function of two variables can be expanded twice as
+\begin{align}
+    \Psi(\mathbf{x}_1,\mathbf{x}_2)&=\sum_{i}a_i(\mathbf{x}_2)\chi_i(\mathbf{x}_1)\\
+    a_i(\mathbf{x}_2)&=\sum_{j}b_{ij}\chi_j(\mathbf{x}_2)\\
+    \Psi(\mathbf{x}_1,\mathbf{x}_2)&=\sum_{ij}b_{ij}\chi_i(\mathbf{x}_1)\chi_j(\mathbf{x}_2)
+\end{align}
+The antisymmetry principle leads to $b_{ij}=-b_{ji}$ and $b_{ii}=0$, $\Psi$ has the form
+\begin{equation}
+    \begin{split}
+        \Psi(\mathbf{x}_1,\mathbf{x}_2)&=\sum_{i}\sum_{j>i}b_{ij}\left[\chi_i(\mathbf{x}_1)\chi_j(\mathbf{x}_2)
+    -\chi_j(\mathbf{x}_1)\chi_i(\mathbf{x}_2)\right]\\
+    &=\sum_{i}\sum_{i<j}\sqrt{2}b_{ij}\ket{\chi_i\chi_j}
+    \end{split}
+\end{equation}
+So the exact wave function of N-electron system can be written as a linear combination of
+all possible Slater determinants formed from a complete set of spin orbitals. Since all possible
+determinants can be described by reference to the ground state determinant, the exact wave function
+can be written as
+\begin{equation}
+    \ket{\Phi_0}=c_o\ket{\Psi_0}+\sum_{ar}c_a^r\ket{\Psi_a^r}+\sum_{\stackrel{a<b}{r<s}}c_{ab}^{rs}\ket{\Psi_{ab}^{rs}}+\sum_{\stackrel{a<b<c}{r<s<t}}c_{abc}^{rst}\ket{\Psi_{abc}^{rst}}+\cdots
+\end{equation}
+($a<b$ means summing over all a and over all b greater than a)\\
+Thus the infinite set of N-electron determinants $\{\ket{\Psi_i}\}=\{\ket{\Psi_0},\ket{\Psi_a^r},\ket{\Psi_{abc}^{rst}},\ldots\}$
+is a complete set for expansion of any N-electron wave function. Since every $\ket{\Psi_i}$ can be defined by specifying a “configuration” of
+spin orbitals from which it is formed, this procedure is called \textbf{configuration interaction (CI)} and will be considered later.
+\subsection{Operators and Matrix Elements}
+Given an operator $\Hat{O}$ and two N-electron determinants $\ket{K}$ and $\ket{L}$, an important
+problem is to evaluate $\bra{K}\Hat{O}\ket{L}$. By evaluating such matrix elements, we can reduce
+them to intergals involving spatial orbitals $\psi_i$ finally. We also begin with minimal basis $H_2$ model.
+\subsubsection{Minimal basis $H_2$ matrix elements}
+The exact ground state of this model has the form because of the orbital symmetry
+\begin{equation}
+    \ket{\Phi}=c_0\ket{\Psi_0}+c_{1\bar{1}}^{2\bar{2}}\ket{\Psi_{1\bar{1}}^{2\bar{2}}}=c_0\ket{\Psi_0}+c_{12}^{34}\ket{\Psi_{12}^{34}}
+\end{equation}
+So the Hamiltonian matrix is this basis is
+\begin{equation}
+    \mathbf{H}=
+    \begin{bmatrix}
+        \bra{\Psi_0}\Hat{H}\ket{\Psi_0} & \bra{\Psi_0}\Hat{H}\ket{\Psi_{12}^{34}}\\
+        \bra{\Psi_{12}^{34}}\Hat{H}\ket{\Psi_0} & \bra{\Psi_{12}^{34}}\Hat{H}\ket{\Psi_{12}^{34}}
+    \end{bmatrix}
+\end{equation}
+The Hamiltonian operator for any 2-electron system is
+\begin{equation}
+    \begin{split}
+        \Hat{H}&=(-\frac{1}{2}\nabla_1^2-\sum_{A}\frac{Z_A}{r_{1A}})+(-\frac{1}{2}\nabla_2^2-\sum_{A}\frac{Z_A}{r_{2A}})+\frac{1}{r_{12}}\\
+        &=\Hat{h}(1)+\Hat{h}(2)+\frac{1}{r_{12}} 
+    \end{split}
+\end{equation}
+where $\Hat{h}_1$ is a core-Hamiltonian of electron-1 which describes the kinetic energy and the potential energy in the field of core. And we
+can separate the total Hamiltonian into 1-electron and 2-electron parts
+\begin{align}
+    \Hat{O}_1&=\Hat{h}_1+\Hat{h}_2\\
+    \Hat{O}_2&=\frac{1}{r_{12}}
+\end{align}
+Now consider the matrix element
+\begin{align}
+    \bra{\Psi_0}\Hat{O}_1\ket{\Psi_0}=\bra{\Psi_0}\Hat{h}_1\ket{\Psi_0}+\bra{\Psi_0}\Hat{h}_2\ket{\Psi_0}
+\end{align}
+\begin{align*}
+    \bra{\Psi_0}\Hat{h}_1\ket{\Psi_0}=\int&\,d\mathbf{x}_1d\mathbf{x}_2{\left[\frac{1}{\sqrt{2}}(\chi_1(\mathbf{x}_1)\chi_2(\mathbf{x}_2)
+    -\chi_1(\mathbf{x}_2)\chi_2(\mathbf{x}_1))\right]}^* \notag \\
+    &\Hat{h(\mathbf{r}_1)}\left[\frac{1}{\sqrt{2}}(\chi_1(\mathbf{x}_1)\chi_2(\mathbf{x}_2)
+    -\chi_1(\mathbf{x}_2)\chi_2(\mathbf{x}_1))\right] \notag \\
+\end{align*}
+\begin{align*}
+    =\frac{1}{2}\int\,d\mathbf{x}_1d\mathbf{x}_2\big[&\chi_1^*(\mathbf{x}_1)\chi_2^*(\mathbf{x}_2)\Hat{h}_1(\mathbf{r}_1)\chi_1(\mathbf{x}_1)\chi_2(\mathbf{x}_2)\notag \\
+    +&\chi_1^*(\mathbf{x}_2)\chi_2^*(\mathbf{x}_1)\Hat{h}_1(\mathbf{r}_1)\chi_1(\mathbf{x}_2)\chi_2(\mathbf{x}_1)\notag \\
+    -&\chi_1^*(\mathbf{x}_1)\chi_2^*(\mathbf{x}_2)\Hat{h}_1(\mathbf{r}_1)\chi_1(\mathbf{x}_2)\chi_2(\mathbf{x}_1)\notag \\
+    -&\chi_1^*(\mathbf{x}_2)\chi_2^*(\mathbf{x}_1)\Hat{h}_1(\mathbf{r}_1)\chi_1(\mathbf{x}_1)\chi_2(\mathbf{x}_2)\big]
+\end{align*}
+\begin{equation}
+    \bra{\Psi_0}\Hat{h}_1\ket{\Psi_0}=\frac{1}{2}\int\,d\mathbf{x}_1\chi_1^*(\mathbf{x}_1)\Hat{h}_1(\mathbf{r}_1)\chi_1(\mathbf{x}_1)+
+    \frac{1}{2}\int\,d\mathbf{x}_1\chi_2^*(\mathbf{x}_1)\Hat{h}_1(\mathbf{r}_1)\chi_2(\mathbf{x}_1)
+\end{equation}
+Because $\bra{\Psi_0}\Hat{h}_1\ket{\Psi_0}=\bra{\Psi_0}\Hat{h}_2\ket{\Psi_0}$, the matrix element can be written as
+\begin{equation}
+    \bra{\Psi_0}\Hat{h}_1\ket{\Psi_0}=\int\,d\mathbf{x}_1\chi_1^*(\mathbf{x}_1)\Hat{h}_1(\mathbf{r}_1)\chi_1(\mathbf{x}_1)+
+    \int\,d\mathbf{x}_1\chi_2^*(\mathbf{x}_1)\Hat{h}_1(\mathbf{r}_1)\chi_2(\mathbf{x}_1)
+\end{equation}
+The integrals in this expression are \textbf{one-electron intergals}, the integration is over the coordinates of a single electron.\\
+Next we evaluate matrix elements of $\Hat{O}_2$
+\begin{align*}
+    \bra{\Psi_0}\Hat{O}_2\ket{\Psi_0}=\int&\,d\mathbf{x}_1d\mathbf{x}_2{\left[\frac{1}{\sqrt{2}}(\chi_1(\mathbf{x}_1)\chi_2(\mathbf{x}_2)
+    -\chi_1(\mathbf{x}_2)\chi_2(\mathbf{x}_1))\right]}^* \notag \\
+    &\frac{1}{r_{12}}\left[\frac{1}{\sqrt{2}}(\chi_1(\mathbf{x}_1)\chi_2(\mathbf{x}_2)
+    -\chi_1(\mathbf{x}_2)\chi_2(\mathbf{x}_1))\right] \notag \\
+\end{align*}
+\begin{align*}
+    =\frac{1}{2}\int\,d\mathbf{x}_1d\mathbf{x}_2\big[&\chi_1^*(\mathbf{x}_1)\chi_2^*(\mathbf{x}_2)\frac{1}{r_{12}}\chi_1(\mathbf{x}_1)\chi_2(\mathbf{x}_2)\notag \\
+    +&\chi_1^*(\mathbf{x}_2)\chi_2^*(\mathbf{x}_1)\frac{1}{r_{12}}\chi_1(\mathbf{x}_2)\chi_2(\mathbf{x}_1)\notag \\
+    -&\chi_1^*(\mathbf{x}_1)\chi_2^*(\mathbf{x}_2)\frac{1}{r_{12}}\chi_1(\mathbf{x}_2)\chi_2(\mathbf{x}_1)\notag \\
+    -&\chi_1^*(\mathbf{x}_2)\chi_2^*(\mathbf{x}_1)\frac{1}{r_{12}}\chi_1(\mathbf{x}_1)\chi_2(\mathbf{x}_2)\big]
+\end{align*}
+Since $r_{12}=r_{21}$, the intergal can be written as
+\begin{align}
+    \bra{\Psi_0}\Hat{O}_2\ket{\Psi_0}&=\int\,d\mathbf{x}_1d\mathbf{x}_2\chi_1^*(\mathbf{x}_1)\chi_2^*(\mathbf{x}_2)\frac{1}{r_{12}}\chi_1(\mathbf{x}_1)\chi_2(\mathbf{x}_2) \notag \\
+    &-\int\,d\mathbf{x}_1d\mathbf{x}_2\chi_1^*(\mathbf{x}_1)\chi_2^*(\mathbf{x}_2)\frac{1}{r_{12}}\chi_2(\mathbf{x}_1)\chi_1(\mathbf{x}_2)
+\end{align}
+The integrals in this expression are \textbf{two-electron intergals}, the integration is over the space and spin coordinates of electron 1 and 2.
+\subsubsection{Notations for one- and two-electron intergals}
+To simplify the expressions for matrix elements involving N-electron determinants, we can use some notations.\\
+One-electron integral
+\begin{equation}
+    \bra{i}h\ket{j}=\int\,d\mathbf{x}_1\chi_i^*(\mathbf{x}_1)\Hat{h}(\mathbf{r}_1)\chi_j^*(\mathbf{x}_1)
+\end{equation}
+Two-electron integral
+\begin{align}
+    \left[ij|kl\right]&=\int\,d\mathbf{x}_1d\mathbf{x}_2\chi_i^*(\mathbf{x}_1)\chi_j(\mathbf{x}_1)\frac{1}{r_{12}}\chi_k^*(\mathbf{x}_2)\chi_l(\mathbf{x}_2)\\
+    \braket{ij|kl}&=\int\,d\mathbf{x}_1d\mathbf{x}_2\chi_i^*(\mathbf{x}_1)\chi_j^*(\mathbf{x}_2)\frac{1}{r_{12}}\chi_k(\mathbf{x}_1)\chi_l(\mathbf{x}_2)
+\end{align}
+The first one is often referred to as the chemists' notation and the second one is referred to as physicists' notation. And because the integral often appear in such combination, we introduce a new symbol
+\begin{equation}
+    \begin{split}
+        \bra{ij}\ket{kl}&=\braket{ij|kl}-\braket{ij|lk} \notag \\
+        &=\int\,d\mathbf{x}_1d\mathbf{x}_2\chi_i^*(\mathbf{x}_1)\chi_j^*(\mathbf{x}_2)\frac{1}{r_{12}}(1-\Hat{P}_{12})\chi_k(\mathbf{x}_1)\chi_l(\mathbf{x}_2)
+    \end{split}
+\end{equation}
+where $\Hat{P}_{12}$ is an operator which interchanges the coordinates of electron 1 and 2. 
+\subsubsection{General rules for matrix elements}
+In the minimal basis $H_2$ model, it's fairly easy to evaluate matrix elements. However, when we deal with N-electron system, the evaluations will be
+more complicated. Therefore, we simply present a set of rules to evaluate matrix.\\
+There are 2 types of operators in quantum chemistry, the first one is a sum of one-electron operators, they depend only on the position or momentum of the electron and independent
+of other electrons. The second one is a sum of two-electron operators, they depends on both ith and jth electron and sum all unique pairs of electrons. 
+\begin{align}
+    \Hat{O}_1&=\sum_{i=1}^{N}\Hat{h}(i)\\
+    \Hat{O}_2&=\sum_{i=1}^{N}\sum_{j>i}^{N}\Hat{v}(i,j)\equiv\sum_{i<j}\Hat{v}(i,j)
+\end{align} 
+The coulomb interaction between two electrons is a two-electron operator
+\begin{equation}
+    \Hat{v}(i,j)=\frac{1}{r_{ij}}
+\end{equation}
+The rules for evaluating matrix elements $\bra{K}\Hat{O}\ket{L}$ depend on the type of operators. And the value of $\bra{K}\Hat{O}\ket{L}$ depends on the degree to which the two
+determinants differ. The difference between two determinants has three cases. \\
+Case 1, two determinants are identical
+\begin{equation}
+    \ket{K}=\ket{L}=\ket{\cdots\chi_m\chi_n\cdots}
+\end{equation}
+Case 2, two determinants differ by one spin orbital, $\chi_m$ in $\ket{K}$ being replaced by $\chi_p$ in $\ket{L}$
+\begin{equation}
+    \ket{L}=\ket{\cdots\chi_p\chi_n\cdots}
+\end{equation}
+Case 3, two determinants differ by two spin orbitals, $\chi_m$ and $\chi_n$ in $\ket{K}$ being replaced by $\chi_p$ and $\chi_q$ in $\ket{L}$
+\begin{equation}
+    \ket{L}=\ket{\cdots\chi_p\chi_q\cdots}
+\end{equation}
+When the two determinants differ by three or more spin orbitals, the matrix element is always zero.\\
+We use a table to summarize the rules
+\begin{longtable}{ccc}
+\toprule[2pt]
+&one-electron operator & two-electron operator\\
+&$\Hat{O}_1=\sum_{i=1}^{N}\Hat{h} (i)$ & $\Hat{O}_2=\sum_{i=1}^{N}\sum_{j>i}^{N}\frac{1}{r_{ij}}$\\
+\midrule[1pt]
+Case1 & $\bra{K}\Hat{O}_1\ket{L}=\sum_{m}^{M}\bra{m}h\ket{m}$ & $\bra{K}\Hat{O}_2\ket{L}=\frac{1}{2}\sum_{m}^{N}\sum_{n}^{N}\bra{mn}\ket{mn}  $\\
+& & $=\sum_{m}^{N}\sum_{n>m}^{N}\bra{mn}\ket{mn}$\\
+Case2 & $\bra{K}\Hat{O}_1\ket{L}=\bra{m}h\ket{p}$ & $\bra{K}\Hat{O}_2\ket{L}=\sum_{n}^{N}\bra{mn}\ket{pn}$\\
+Case3 & $\bra{K}\Hat{O}_1\ket{L}=0$ & $\bra{K}\Hat{O}_2\ket{L}=\bra{mn}\ket{pq}$\\
+\bottomrule[2pt]
+\end{longtable}
+\subsubsection{Transition from spin orbitals to spatial orbitals}
+All of our development so far has involved spin orbitals $\{\chi_i\}$ rather than spatial orbitals $\{\psi_i\}$. However, for most computational purposes, the
+spin function must be integrated out. And intergals of spatial orbitals are more convenient to numerical computation. We will show how the transition is done
+and the notations for spatial intergals.\\
+We still begin with the minimal basis $H_2$ model, the ground state energy is (using chemists' notation)
+\begin{equation}
+    E_0=\big[\chi_1|h|\chi_1\big]+\big[\chi_2|h|\chi_2\big]+\big[\chi_1\chi_1|\chi_2\chi_2\big]-\big[\chi_1\chi_2|\chi_2\chi_1\big]
+\end{equation}
+Since $\chi_1(\mathbf{x})\equiv\psi_1(\mathbf{x})$ and $\chi_2(\mathbf{x})\equiv\bar{\psi}_1(\mathbf{x})$, the one-electron integral is
+\begin{align}
+    \big[\psi_1|h|\psi_1\big]&=\int\,d\mathbf{r}_1 d\omega_1 \psi_1^*(\mathbf{r}_1)\beta^*(\omega_1)\Hat{h}_1(\mathbf{r}_1)\psi_1(\mathbf{r}_1)\beta(\omega_1)\notag\\
+    &=\int\,d\mathbf{r}_1\psi_1^*(\mathbf{r}_1)\Hat{h}_1(\mathbf{r}_1)\equiv(\psi_1|h|\psi_1)
+\end{align}
+And the two-electron integral is
+\begin{align}
+    \big[\psi_1\psi_1|\bar{\psi}_1\bar{\psi}_1\big]=&\int\,d\mathbf{r}_1 d\omega_1 d\mathbf{r}_2 d\omega_2 \psi_1^*(\mathbf{r}_1)\alpha^*(\omega_1)\psi_1(\mathbf{r}_1)\alpha(\omega_1)\frac{1}{r_{12}}\notag \\
+    &\quad \psi_1^*(\mathbf{r}_2)\beta^*(\omega_2)\psi_1(\mathbf{r}_2)\beta(\omega_2)\notag\\
+    =&\int\,d\mathbf{r}_1 d\mathbf{r}_2 \psi_1^*(\mathbf{r}_1)\psi_1(\mathbf{r}_1)\frac{1}{r_{12}}\psi_1^*(\mathbf{r}_2)\psi_1(\mathbf{r}_2)\equiv(\psi_1\psi_1|\psi_1\psi_1)
+\end{align}
+Therefore, the ground state energy is
+\begin{align}
+    E_0&=2(\psi_1|h|\psi_1)+(\psi_1\psi_1|\psi_1\psi_1)\notag\\
+    &=2(1|h|1)+(11|11)
+\end{align}
+Now we consider N-electron system, the \textbf{closed-shell restricted} Hartree-Fock wave function is
+\begin{equation}
+    \begin{split}
+        \ket{\Psi_0}&=\ket{\chi_1\chi_2\cdots\chi_{N-1}\chi_N}\\
+        &=\ket{\psi_1\bar{\psi}_1\cdots\psi_N\bar{\psi}_N}
+    \end{split}
+\end{equation} 
+and the sum of N spin orbitals can be written as 
+\begin{align}
+    \sum_{a}^{N}\chi_a&=\sum_{a}^{N/2}\psi_a+\sum_{a}^{N/2}\bar{\psi}_a\\
+    \sum_{a}^{N}&=\sum_{a}^{N/2}+\sum_{\bar{a}}^{N/2}\\
+    \sum_{a}^{N}\sum_{b}^{N}\chi_a\chi_b&=\sum_{a}^{N}\chi_a\sum_{b}^{N}\chi_b \notag\\
+    &=\sum_{a}^{N/2}(\psi_a+\bar{\psi}_a)\sum_{b}^{N/2}(\psi_b+\bar{\psi}_b)\notag\\
+    &=\sum_{a}^{N/2}\sum_{b}^{N/2}\psi_a\psi_a+\psi_a\bar{\psi}_b+\bar{\psi}_a\psi_b+\bar{\psi}_a\bar{\psi}_b\\
+    \sum_{a}^{N}\sum_{b}^{N}&=\sum_{a}^{N/2}\sum_{b}^{N/2}+\sum_{a}^{N/2}\sum_{\bar{b}}^{N/2}+\sum_{\bar{a}}^{N/2}\sum_{b}^{N/2}+\sum_{\bar{a}}^{N/2}\sum_{\bar{b}}^{N/2}
+\end{align}
+The ground state is
+\begin{equation}
+    \begin{split}
+        E_0&=\sum_{a}^{N}\big[a|h|a\big]+\frac{1}{2}\sum_{a}^{N}\sum_{b}^{N}\big[aa|bb\big]-\big[ab|ba\big]\\
+        &=2\sum_{a}^{N/2}(\psi_a|h|\psi_a)+\frac{1}{2}\biggl\{\sum_{a}^{N/2}\sum_{b}^{N/2}\big[aa|bb]-\big[ab|ba]\\
+        &\quad +\sum_{a}^{N/2}\sum_{\bar{b}}^{N/2}\big[aa|\bar{b}\bar{b}]-\big[a\bar{b}|\bar{b}a]+\sum_{\bar{a}}^{N/2}\sum_{b}^{N/2}\big[\bar{a}\bar{a}|bb\big]-\big[\bar{a}b|b\bar{a}\big]\\
+        &\quad +\sum_{\bar{a}}^{N/2}\sum_{\bar{b}}^{N/2}\big[\bar{a}\bar{a}|\bar{b}\bar{b}\big]-\big[\bar{a}\bar{b}|\bar{b}\bar{a}\big]\biggr\}\\
+        &=2\sum_{a}^{N/2}(\psi_a|h|\psi_a)+\sum_{a}^{N/2}\sum_{b}^{N/2}2(\psi_a\psi_a|\psi_b\psi_b)-(\psi_a\psi_b|\psi_b\psi_a)\\
+        &=2\sum_{a}^{N/2}(a|h|a)+\sum_{a}^{N/2}\sum_{b}^{N/2}2(aa|bb)-(ab|ba)
+    \end{split}
+\end{equation}
+\subsubsection{Coulomb and exchange integrals}
+After the transition, now we consider the physical interpretation of the Hartree-Fock ground state energy, the one-electron terms is the average kinetic and nuclear attraction
+of an electron
+\begin{equation}
+    (a|h|a)\equiv h_{aa}=\int\,d\mathbf{r}_1\psi_a^*(\mathbf{r}_1)(\frac{1}{2}\nabla_1^2-\sum_{A}\frac{Z_A}{r_{1A}})\psi_a(\mathbf{r}_1) 
+\end{equation}
+The two-electron terms have two parts (both are positive)
+\begin{align}
+    (aa|bb)&\equiv J_{ab}=\int\,d\mathbf{r}_1\mathbf{r}_2|\psi_a(\mathbf{r}_1)|^2\frac{1}{r_{12}}|\psi_b(\mathbf{r}_2)|^2\\
+    (ab|ba)&\equiv K_{ab}=\int\,d\mathbf{r}_1\mathbf{r}_2\psi_a^*(\mathbf{r}_1)\psi_b(\mathbf{r}_1)\frac{1}{r_{12}}\psi_b^*(\mathbf{r}_2)\psi_a(\mathbf{r}_2)
+\end{align}
+$J_{ab}$ is the classical coulomb repulsion between the charge clouds $|\psi_a(\mathbf{r}_1)|^2$ and $|\psi_a(\mathbf{r}_1)|^2$, this integral is called a \textbf{coulomb} integral.
+$K_{ab}$ does not have a simple classical interpretation, it's called an \textbf{exchange} intergal.
+The ground state energy is the sum of these intergals (for a closed-shell system)
+\begin{equation}
+    E_0=2\sum_{a}h_{aa}+\sum_{a}\sum_{b}2J_{ab}-K_{ab}
+\end{equation}
+It must be remembered that exchange interactions between electrons with parallel spin are not real physical interactions, it's just a
+convenient way of representing the energy of a system described by a single determinant. The physical interaction between two electrons
+is only described by $\frac{1}{r_{ij}}$ in the Hamiltonian and does not depend on the spins of electrons.
+\subsection{Second Quantization}
+The antisymmetry principle is an axiom of quantum mechanics. We use Slater determinants and their linear combination to satisfy the principle. Besides, we can also transfer 
+the antisymmetry property of the wave functions onto the algebraic properties of certain operators to satisfy it. It's called second quantization.
+\subsubsection{Creation and annihilation operators}
+To begin with, we introduce a \textbf{creation operator} $a_i^\dagger$ and a \textbf{annihilation operator} $a_i$ for each spin orbital $\chi_i$.
+We define them by their action on an arbitary Slater determinant
+\begin{align}
+    a_i^\dagger\ket{\chi_k\cdots\chi_l}&=\ket{\chi_i\chi_k\cdots\chi_l}\\
+    a_i\ket{\chi_i\chi_k\cdots\chi_l}&=\ket{\chi_k\cdots\chi_l}
+\end{align}
+$a_i^\dagger$ creates an electron in spin orbital $\chi_i$ and $a_i$ annihilates an electron in it, and ${(a_i^\dagger)}^\dagger=a_i$.\\
+We use a notation for the \textbf{anticommutator} of the operators, it describes the relations between two operators
+\begin{align}
+    \biggl\{a_i^\dagger,a_j^\dagger\biggr\} &= a_i^\dagger a_j^\dagger+a_j^\dagger a_i^\dagger = 0\\
+    \biggl\{a_i,a_j\biggr\} &= a_i a_j+a_j a_i = 0\\
+    \biggl\{a_i,a_j^\dagger\biggr\} &=\delta_{ij}
+\end{align}
+All the properties of Slater determinants are contained in the anticommutation relations. In order to define a Slater determinant in the formalism
+of second quantization, we introduce a vacuum state denoted by $\ket{\quad}$. The vacuum state represents a state of the system that contains no
+electrons. It's also normalized and has the property
+\begin{equation}
+    a_i\ket{\quad}=0=\bra{\quad}a_i^\dagger
+\end{equation}
+Using the formalism of second quantization, we can easily evaluate the overlap between two determinants without expanding out them. For example
+\begin{equation}
+    \begin{split}
+        \ket{K}&=\ket{\chi_i\chi_j}=a_i^\dagger a_j^\dagger\ket{\quad}\\
+        \ket{L}&=\ket{\chi_k\chi_l}=a_k^\dagger a_l^\dagger\ket{\quad}\\
+        \braket{K|L}&=\bra{\quad}a_j a_i a_k^\dagger a_l^\dagger\ket{\quad}\\
+        &=\bra{\quad}a_j(\delta_{ik}-a_k^\dagger a_i)a_l^\dagger\ket{\quad}\\
+        &=\delta_{ik}\bra{\quad}a_j a_l^\dagger\ket{\quad}-\bra{\quad}a_j a_k^\dagger a_i a_l^\dagger\ket{\quad}\\
+        &=\delta_{ik}\delta_{jl}-\delta_{ik}\bra{\quad}a_l^\dagger a_j\ket{\quad}-\bra{\quad}a_j a_k^\dagger (\delta_{il}-a_l^\dagger a_i)\ket{\quad}\\
+        &=\delta_{ik}\delta_{jl}-\delta_{il}\bra{\quad}a_j a_k^\dagger\ket{\quad}\\
+        &=\delta_{ik}\delta_{jl}-\delta_{il}\delta_{jk}
+    \end{split}
+\end{equation}
+\subsubsection{Second-quantized operators and matrix elements}
+To be able to develop the entire theory of many-electron systems without using determinants, we express the operators
+$\hat{O}_1, \hat{O}_2$ in terms of creation and annihilation operators. And we can evaluate matrix elements using only
+the algebraic properties of the operators. The appropriate expressions for the operators in second quantization are
+\begin{align}
+    \hat{O}_1&=\sum_{ij}\bra{i}h\ket{j}a_i^\dagger a_j\\
+    \hat{O}_2&=\frac{1}{2}\sum_{ijkl}\braket{ij|kl}a_i^\dagger a_j^\dagger a_l a_k
+\end{align}
+Then we can simply evaluate the matrix elements, if the Hartree-Fock ground state wave function is 
+$\ket{\Psi_0}=\ket{\chi_1\cdots\chi_a\chi_b\cdots\chi_N}$ (the indices i and j belong to the set \{a,b,\ldots\})
+\begin{equation}
+    \begin{split}
+        \bra{\Psi_0}\hat{O}_1\ket{\Psi}&=\sum_{ij}\bra{i}h\ket{j}\bra{\Psi_0}a_i^\dagger a_j\ket{\Psi_0}\\
+        &=\sum_{ab}\bra{a}h\ket{b}\bra{\Psi_0}a_a^\dagger a_b\ket{\Psi_0}\\
+        &=\sum_{ab}\bra{a}h\ket{b}\bra{\Psi_0}(\delta_{ab}-a_a a_b^\dagger)\ket{\Psi_0}\\
+        &=\sum_{ab}\bra{a}h\ket{b}\delta_{ab}\\
+        &=\sum_a\bra{a}h\ket{a}
+    \end{split}
+\end{equation}
+\begin{equation}
+    \begin{split}
+        \bra{\Psi_0}\hat{O}_2\ket{\Psi}&=\frac{1}{2}\sum_{ijkl}\braket{ij|kl}\bra{\Psi_0}a_i^\dagger a_j^\dagger a_l a_k\ket{\Psi_0}\\
+        &=\frac{1}{2}\sum_{abcd}\braket{ab|cd}\bra{\Psi_0}a_a^\dagger a_b^\dagger a_d a_c\ket{\Psi_0}\\
+        \bra{\Psi_0}a_a^\dagger a_b^\dagger a_d a_c\ket{\Psi_0}&=\delta_{bd}\bra{\Psi_0}a_a^\dagger a_c\ket{\Psi_0}-\bra{\Psi_0}a_a^\dagger a_d a_b^\dagger  a_c\ket{\Psi_0}\\
+        &=\delta_{bd}\delta_{ac}-\delta_{bc}\bra{\Psi_0}a_a^\dagger a_d\ket{\Psi_0}\\
+        &=\delta_{bd}\delta_{ac}-\delta_{bc}\delta_{ad}\\
+        \bra{\Psi_0}\hat{O}_2\ket{\Psi}&=\frac{1}{2}\sum_{ab}\braket{ab|ab}-\braket{ab|ba}
+    \end{split}
+\end{equation}
+\subsection{Spin-Adapted Configurations}
+\subsubsection{Spin operators}
+The spin angular momentum of a particle is a vector operator $\vec{s}$, and the squared magnitude of $\vec{s}$ is a scalar operator
+\begin{align}
+    \vec{s}&=s_x\vec{\imath}+s_y\vec{\jmath}+s_z\vec{k}\\
+    s^2&=s_x^2+s_y^2+s_z^2
+\end{align}
+The components of the spin angular momentum satisfy the commutation relations
+\begin{equation}
+    \bigl[s_x,s_y\bigr]=is_z,\qquad\bigl[s_y,s_z\bigr]=is_x,\qquad\bigl[s_z,s_x\bigr]=is_y
+\end{equation}
+The complete set of states describing the spin of a single particle can be taken to be the simultaneous eigenfunctions of $s^2$ and a single
+component of $\vec{s}$, usually chosen to be $s_z$,
+\begin{align}
+    s^2\ket{s,m_s}&=s(s+1)\ket{s,m_s}\\
+    s_z\ket{s,m_s}&=m_s\ket{s,m_s}
+\end{align}
+and for a electron
+\begin{equation}
+    \ket{\frac{1}{2},\frac{1}{2}}\equiv\ket{\alpha}\qquad\ket{\frac{1}{2},-\frac{1}{2}}\equiv\ket{\beta}
+\end{equation}
+Because the spin states are not eigenfunctions of $s_x$ and $s_y$, it's often convenient to work with ladder operators, $s_+,s_-$, defined as
+\begin{equation}
+    s_+=s_x+is_y \qquad s_-=s_x-is_y
+\end{equation}
+they increase or decrease the value of $m_s$
+\begin{align}
+    \begin{matrix}
+        s_+\ket{\alpha}=0 && s_+\ket{\beta}=\ket{\alpha}\\
+        s_-\ket{\alpha}=\ket{\beta} && s_-\ket{\beta}=0
+    \end{matrix}
+\end{align}
+Using the commutation relations, the expression for $s^2$ can be written as
+\begin{align}
+    s^2&=s_+s_- -s_z+s_z^2\\
+    s^2&=s_-s_+ +s_z+s_z^2
+\end{align}
+In a N-electron system, the spin operators are
+\begin{align}
+    \vec{\mathcal{S}}&=\sum_{i=1}^{N}\vec{s}(i)\\
+    \mathcal{S}_{\pm}&=\sum_{i=1}^{N}s_{\pm}(i)\\
+    \mathcal{S}^2&=\mathcal{S}_+\mathcal{S}_- -\mathcal{S}_z+\mathcal{S}_z^2 \notag\\
+    &=\mathcal{S}_-\mathcal{S}_+ +\mathcal{S}_z+\mathcal{S}_z^2
+\end{align}
+In the usual nonrelativistic treatment, the Hamiltonian does not contain any spin corrdinates and hence both
+$\mathcal{S}^2, \mathcal{S}_z$ commute with the Hamiltonian
+\begin{equation}
+    \big[\mathcal{H},\mathcal{S}^2\big]=0=\big[\mathcal{H},\mathcal{S}_z\big]
+\end{equation}
+Consequently, the exact eigenfunctions of the Hamiltonian are also eigenfunctions of the two spin operators
+\begin{align}
+    \mathcal{S}^2\ket{\Phi}&=S(S+1)\ket{\Phi}\\
+    \mathcal{S}_z\ket{\Phi}&=M_s\ket{\Phi}
+\end{align}
+States with $S=0,\frac{1}{2},1,\ldots$ have multiplicity $(2S+1)=1,2,3,\ldots$ and are called signlets, doublets,
+triplets, etc. Approximate solutions of the Schr\"odinger equation are \textbf{not necessarily pure spin states}.
+However, it's often convenient to constrain approximate  wave functions to be pure signlets, doublets, triplets, etc.\\
+Any single determinant is an eigenfunction of $\mathcal{S}_z$
+\begin{equation}
+    \mathcal{S}_z\ket{\chi_1\cdots\chi_N}=\frac{1}{2}(N^\alpha-N^\beta)\ket{\chi_1\cdots\chi_N}
+\end{equation}
+where $N^\alpha, N^\beta$ are the number of spin orbitals with $\alpha, \beta$ spin. However, single determinants are not
+necessarily eigenfunctions of $\mathcal{S}^2$. We will form spin-adapted configurations that are correct eigenfunctions of
+$\mathcal{S}^2$ by combining a small number of single determinants.
+\subsubsection{Restricted determinants and spin-adapted configurations}
+Given a set of K orthonormal spatial orbitals we can form a set of 2K spin orbitals by multiplying each spatial orbital the
+$\alpha$ or $\beta$ spin function
+\begin{equation}
+    \begin{split}
+        \chi_{2i-1}(\mathbf{x})&=\psi_i(\mathbf{r})\alpha(\omega)\\
+        \chi_{2i}(\mathbf{x})&=\psi_i(\mathbf{r})\beta(\omega)\\
+    \end{split}
+\end{equation}
+Such spin orbitals are called \textbf{restricted} spin orbitals, and determinants formed from them are \textbf{restricted determinants}.
+A determinant in which each spatial orbital is doubly occupied is called \textbf{closed-shell} determinant. An \textbf{open-shell} determinant
+refers to a spatial that contains a single electron.\\
+A closed-shell determinant is a pure singlet. However, for open-shell determinants, they are not eigenfunctions of $\mathcal{S}^2$, except
+when all the open-shell electrons have parallel spin. As an illustration, let us consider the four singly determinants that arise in the minimal
+basis $H_2$ model.
+\begin{align}
+    \ket{\Psi_1^{\bar{2}}}&=\ket{\bar{2}\bar{1}}=-\frac{1}{\sqrt{2}}\big[\psi_1(1)\psi_2(2)-\psi_1(2)\psi_2(1)\big]\beta(1)\beta(2)\\
+    \ket{\Psi_{\bar{1}}^2}&=\ket{1 2}=\frac{1}{\sqrt{2}}\big[\psi_1(1)\psi_2(2)-\psi_1(2)\psi_2(1)\big]\alpha(1)\alpha(2)\\
+\end{align}
+$\ket{\bar{2}\bar{1}}, \ket{1 2}$ are eigenfunctions of $\mathcal{S}^2$ with eigenvalue $S=1$, they are both triplets. But $\ket{2 \bar{1}}, \ket{1 \bar{2}}$
+are not pure spin states, we can form \textbf{spin-adapted configurations} by taking appropriate linear combinations of these determinants
+\begin{align}
+    \ket{ ^1\Psi_1^2}&=\frac{1}{\sqrt{2}}(\ket{\Psi_{\bar{1}}^{\bar{2}}}+\ket{\Psi_1^2})\notag\\
+    &=\frac{1}{\sqrt{2}}\big[\psi_1(1)\psi_2(2)+\psi_1(2)\psi_2(1)\big]\frac{1}{\sqrt{2}}(\alpha(1)\beta(2)-\alpha(2)\beta(1))\\
+    \ket{ ^3\Psi_1^2}&=\frac{1}{\sqrt{2}}(\ket{\Psi_{\bar{1}}^{\bar{2}}}-\ket{\Psi_1^2})\notag\\
+    &=\frac{1}{\sqrt{2}}\big[\psi_1(1)\psi_2(2)-\psi_1(2)\psi_2(1)\big]\frac{1}{\sqrt{2}}(\alpha(1)\beta(2)+\alpha(2)\beta(1))
+\end{align}
+The singlet spin-adapted configuration corresponding to the single excitation is
+\begin{equation}
+    \ket{ ^1\Psi_a^r}=\frac{1}{\sqrt{2}}(\ket{\Psi_{\bar{a}}^{\bar{r}}}+\ket{\Psi_a^r})
+\end{equation}
+and for double excitation, there are four types of signlet spin adapted configuration
+\begin{align}
+    \ket{ ^1\Psi_{aa}^{rr}}&=\ket{\Psi_{a\bar{a}}^{r\bar{r}}}\\
+    \ket{ ^1\Psi_{aa}^{rs}}&=\frac{1}{\sqrt{2}}(\ket{\Psi_{a\bar{a}}^{r\bar{s}}}+\ket{\Psi_{a\bar{a}}^{\bar{r}s}})\\
+    \ket{ ^1\Psi_{ab}^{rr}}&=\frac{1}{\sqrt{2}}(\ket{\Psi_{a\bar{b}}^{r\bar{r}}}+\ket{\Psi_{b\bar{a}}^{r\bar{r}}})\\
+    \ket{ ^A\Psi_{ab}^{rs}}&=\frac{1}{\sqrt{12}}(2\ket{\Psi_{ab}^{rs}}+2\ket{\Psi_{\bar{a}\bar{b}}^{\bar{r}\bar{s}}}-
+    \ket{\Psi_{b\bar{a}}^{r\bar{s}}}+\ket{\Psi_{b\bar{a}}^{s\bar{r}}}+\ket{\Psi_{a\bar{b}}^{r\bar{s}}}-\ket{\Psi_{a\bar{b}}^{s\bar{r}}})\\
+    \ket{ ^A\Psi_{ab}^{rs}}&=\frac{1}{2}(\ket{\Psi_{\bar{a}b}^{\bar{s}r}}+\ket{\Psi_{\bar{a}b}^{\bar{r}s}}+\ket{\Psi_{\bar{b}a}^{\bar{s}r}}+\ket{\Psi_{\bar{b}a}^{\bar{r}s}})
+\end{align}
+\subsubsection{Unrestricted determinants}
+With restricted determinants, the spatial orbitals are constrained to be identical for $\alpha, \beta$ spins. For example,
+the restricted determinant of Li atom is
+\begin{equation}
+    \ket{\Psi_{RHF}}=\ket{\psi_{1s}\bar{\psi}_{1s}\psi_{2s}}
+\end{equation}
+Because the $2s\alpha$ electron spin ``polarizes'' the $1s$ shell, the $1s\alpha$ and $1s\beta$ will experience different effective potentials and would ``prefer'' not 
+to be described by the same spatial function. By using different orbitals for different spins, we will obtain a lower energy, and the wave function is called \textbf{unrestricted}
+determinant.
+\begin{equation}
+    \ket{\Psi_{UHF}}=\ket{\psi_{1s}^{\alpha}\bar{\psi}_{1s}^{\beta}\psi_{2s}^{\alpha}}
+\end{equation}
+Unrestricted determinants are formed by two set of orthonormal spatial orbitals $\{\psi_i^{\alpha}\}, \{\psi_i^{\beta}\}$, the two sets are not orthogonal
+\begin{equation}
+    \begin{split}
+        \chi_{2i-1}(\mathbf{x})&=\psi_i^{\alpha}(\mathbf{r})\alpha(\omega) \notag\\\
+        \chi_{2i}(\mathbf{x})&=\psi_i^{\beta}(\mathbf{r})\beta(\omega)\\
+    \end{split}
+\end{equation}
+\begin{equation}
+    \braket{\psi_i^{\alpha}|\psi_j^{\beta}}=S_{ij}^{\alpha\beta}
+\end{equation}
+Unrestricted determinants are not eigenfunctions of $\mathcal{S}^2$. Moreover, they cannot be spin-adapted by combining a small number of unrestricted determinants.
+If $\ket{1},\ket{2},\ket{3}$, etc.are exact singlet, doublet, triplet states etc., then the unrestricted states can be expanded as
+\begin{equation}
+    \begin{split}
+        \ket{ ^1\Psi}&=c_1^1\ket{1}+c_3^1\ket{3}+c_5^1\ket{5}+\cdots\\
+        \ket{ ^2\Psi}&=c_2^2\ket{2}+c_4^2\ket{4}+c_6^2\ket{6}+\cdots\\
+        \ket{ ^1\Psi}&=c_3^3\ket{3}+c5^3\ket{5}+c_7^3\ket{7}+\cdots
+    \end{split}
+\end{equation} 
+Thus an unrestricted wave function is contaminated by higher multiplicity components. If the leading term in the above expansion is dominant, then
+one can describe, to a good approximation, unrestricted determinants as doublet, triplet, etc. The expectation value of $\mathcal{S}^2$ for an unrestricted
+determinant is always too large. In particular, it can be shown that
+\begin{equation}
+    \braket{\mathcal{S}^2}_{UHF}=\braket{\mathcal{S}^2}_{Exact}+N^\beta-\sum_{i}^{N}\sum_{j}^{N}{\lvert S_{ij}^{\alpha\beta}\rvert}^2
+\end{equation}
+\begin{equation}
+    \braket{\mathcal{S}^2}_{Exact}=(\frac{N^\alpha-N^\beta}{2})(\frac{N^\alpha-N^\beta}{2}+1)
+\end{equation}
+In spite of spin contamination, unrestricted determinants are often used as a first approximation to the wave function for doublets and triplets because they
+have lower energy.
+\section{Hartree-Fock Approximation}\
+\subsection{The Hartree-Fock Equation}
+According to Hartree-Fock theory, we are interested in finding a set of spin orbitals $\{\chi_a\}$ such that the single determinant formed from these spin orbitals,
+and the ``best'' spin orbitals are those which minimize the eletronic energy. The equation for the ``best'' spin orbitals is called the Hartree-Fock integro-differential
+equation.
+\begin{align}
+    &h(1)\chi_a(1)+\sum_{b\neq a}\Bigg[\int\,d\mathbf{x}_2 {\lvert \chi_b(2) \rvert}^2 r_{12}^{-1}\Bigg]\chi_a(1) \notag \\
+    &-\sum_{b\neq a}\Bigg[\int\,d\mathbf{x}_2 \chi_b^*(2)\chi_a(2) r_{12}^{-1}\Bigg]\chi_b(1)=\epsilon_a\chi_a(1)
+\end{align}
+The first of two-electron terms is the \textbf{coulomb} term. In an exact theory, the coulomb interaction is represented by the operator $r_{12}^{-1}$, but in Hartree-Fock 
+approximation, electron-one in $\chi_a$ experiences a one-electron coulomb potential
+\begin{equation}
+    \mathcal{V}_a^{coul}(1)=\sum_{b\neq a}\int\,d\mathbf{x}_2 {\lvert \chi_b(2) \rvert}^2 r_{12}^{-1}
+\end{equation}
+The two-electron potential felt by electron 1 and assoicated with the instantaneous position of electron 2 is replaced by a \textbf{one-electron poential}, obtained by averaging
+the interaction of electron 1 and 2, over all space and spin coordinates $\mathbf{x}_2$ of electron 2, weighted by the probability $d\mathbf{x}_2 {\lvert \chi_b(2) \rvert}^2$ that
+electron 2 occupies the volume element $d\mathbf{x}_2$. By summing over all $b \neq a$, one contains the total averaged poential acting on the electron in $\chi_a$.\\
+We can define a \textbf{coulomb operator}
+\begin{equation}
+    \mathcal{J}_b(1)=\int\,d\mathbf{x}_2 {\lvert \chi_b(2) \rvert}^2 r_{12}^{-1}
+\end{equation}
+which represents the average local poential at $\mathbf{x}_1$ arising from an electron in $\chi_b$.
+The second term arises from the antisymmetric nature of the single determinant and has no classical interpretation, we define a \textbf{exchange operator}
+\begin{equation}
+    \mathcal{K}_b(1)\chi_a(1)=\bigg[\int\,d\mathbf{x}_2 \chi_b^*(2)\chi_a(2) r_{12}^{-1}\bigg]\chi_b(1)
+\end{equation}
+The result of operating $\mathcal{K}_b(\mathbf{x}_1)$ on $\chi_a(\mathbf{x}_1)$ depends on the value of $\chi_a$ throughout all space, not just at $\mathbf{x}_1$.\\
+Because of the restricted summation over $b \neq a$, the operator appears to be different for every spin orbital $\chi_a$. However, we can add a term to eliminate\
+the restriction, the term is
+\begin{equation}
+    \big[\mathcal{J}_a(1)-\mathcal{K}_a(1)\big]\chi_a(1)=0
+\end{equation}
+Moreover, we can define a \textbf{fock operator f} by
+\begin{equation}
+    \begin{split}
+        f(1)&=h(1)+\sum_{b}\big[\mathcal{J}_a(1)-\mathcal{K}_a(1)\big]\\
+        &=h(1)+\mathcal{V}_{HF}(1)
+    \end{split}
+\end{equation}
+so that the Hartree-Fock equations become
+\begin{equation}
+    f\ket{\chi_a}=\epsilon_a\ket{\chi_a}
+\end{equation}
+\subsection{Derivation of the Hartree-Fock Equations}
+\subsubsection{Functional variation}
+Given any trial function $\tilde{\Phi}$, the expectation value $E\big[\tilde{\Phi}\big]$ is a functional of $\tilde{\Phi}$. Suppose we vary $\tilde{\Phi}$ by an arbitary
+small amount
+\begin{equation}
+    \tilde{\Phi}\rightarrow \tilde{\Phi}+\delta\tilde{\Phi}
+\end{equation} 
+The energy then becomes
+\begin{equation}
+    \begin{split}
+        E\big[\tilde{\Phi}+\delta\tilde{\Phi} \big]&=E\big[\tilde{\Phi}\big]+\{\bra{\delta\tilde{\Phi}}\mathcal{H}\ket{\tilde{\Phi}}+\bra{\tilde{\Phi}}\mathcal{H}\ket{\delta\tilde{\Phi}}\}+\cdots\\
+        &=E\big[\tilde{\Phi}\big]+\delta E+\cdots    
+    \end{split}
+\end{equation}
+where $\delta E$ is called the first variation in $E$, includes all terms that are linear in the variation $\delta\tilde{\Phi}$. In the variation method, we are looking for the trial function which
+minimizes the energy. In other words, we wish to find the trial function for which the first variation is zero ($\delta E=0$).\
+This condition only ensures $E$ is stationary with respect to any variation in $\tilde{\Phi}$, however, the stationary point normally is also a minimum.\\
+Now we consider this linear variation problem
+\begin{align}
+    \ket{\tilde{\Phi}}&=\sum_{i=1}^{N}c_i\ket{\Psi_i}\\
+    E=\bra{\tilde{\Phi}}\mathcal{H}\ket{\tilde{\Phi}}&=\sum_{ij}c_i^*c_j\bra{\Psi_i}\mathcal{H}\ket{\Psi_j}\\
+    \braket{\tilde{\Phi}|\tilde{\Phi}}&=1
+\end{align}
+We want to minimize the energy subject to the normalized constraint by using Largange's method
+\begin{align}
+    \mathcal{L}&=\bra{\tilde{\Phi}}\mathcal{H}\ket{\tilde{\Phi}}-E(\braket{\tilde{\Phi}|\tilde{\Phi}}-1)\\
+    \delta\mathcal{L}&=\sum_{ij}\delta c_i^*c_j\bra{\Psi_i}\mathcal{H}\ket{\Psi_j}-E\sum_{ij}\delta c_i^*c_j\braket{\Psi_i|\Psi_j}\notag\\
+    +&\sum_{ij}c_i^* \delta c_j\bra{\Psi_i}\mathcal{H}\ket{\Psi_j}-E\sum_{ij}c_i^* \delta c_j\braket{\Psi_i|\Psi_j}\\
+\end{align}
+Since $E$ is real, we get
+\begin{align}
+    &\sum_{i}\delta c_i^*\Bigg[\sum_{j}H_{ij}c_j-ES_{ij}c_j]+\text{complex conjugate}=0\\
+    &H_{ij}=\bra{\Psi_i}\mathcal{H}\ket{\Psi_j}\qquad S_{ij}=\braket{\Psi_i|\Psi_j}\notag\\
+\end{align}    
+Since $\delta c_i^*$ is arbitary, the quantity in square brackets in (139) must be zero
+\begin{align}
+    \sum_{j}H_{ij}c_j&=E\sum_{j}S_{ij}c_j\\
+    \mathbf{Hc}&=E\mathbf{Sc}
+\end{align}
+The functional variation technique thus leads to the same results as is obtained by differentiating with respect to the coefficients.
+\subsubsection{Minimization of the energy of a single determinant}
+Given a single determinant, the ground state is a functional of spin orbitals, we need to minimize the $E_0\big[\{\chi_a\}\big]$ with
+respect to the spin orbitals, subject to the constraint.
+\begin{equation}
+    \begin{split}
+        \mathcal{L}\big[\{\chi_a\}\big]&=E_0\big[\{\chi_a\}\big]-\sum_{a=1}^{N}\sum_{b=1}^{N}\epsilon_{ba}(\int\,d\mathbf{x}_1\chi_a^*(1)\chi_b(1)-\delta_{ab})\\
+        &=E_0\big[\{\chi_a\}\big]-\sum_{a=1}^{N}\sum_{b=1}^{N}\epsilon_{ba}(\big[a|b\big]-\delta_{ab})
+    \end{split}
+\end{equation}
+$\epsilon_{ba}$ constitute a set of Largange multipliers. Because $\mathcal{L}$ is real and $\big[a|b\big]={\big[b|a\big]}^*$, the multipliers
+must be the elements of a Hermitian matrix $\epsilon_{ba}=\epsilon_{ab}^*$. We therefore vary the spin orbitals an arbitary infinitesimal amount
+\begin{equation}
+    \chi_a\rightarrow\chi_a+\delta\chi_a
+\end{equation}
+and set the first variation in $\mathcal{L}$ equal to zero
+\begin{equation}
+    \delta\mathcal{L}=\delta E_0-\sum_{a=1}^{N}\sum_{b=1}^{N}\epsilon_{ba}\delta\big[a|b\big]
+\end{equation}
+\begin{equation}
+    \begin{split}
+        \delta E_0&=\sum_{a=1}^{N}\big[\delta\chi_a|h|\chi_a\big]+\big[\chi_a|h|\delta\chi_a\big]\\
+        +&\frac{1}{2}\sum_{a=1}^{N}\sum_{b=1}^{N}\big[\delta\chi_a\chi_a|\chi_b\chi_b\big]+\big[\chi_a\delta\chi_a|\chi_b\chi_b\big]+\big[\chi_a\chi_a|\delta\chi_b\chi_b\big]+\big[\chi_a\chi_a|\chi_b\delta\chi_b\big]\\
+        -&\frac{1}{2}\sum_{a=1}^{N}\sum_{b=1}^{N}\big[\delta\chi_a\chi_b|\chi_b\chi_a\big]+\big[\chi_a\delta\chi_b|\chi_b\chi_a\big]+\big[\chi_a\chi_b|\delta\chi_b\chi_a\big]+\big[\chi_a\chi_b|\chi_b\delta\chi_a\big]
+    \end{split}
+\end{equation}
+\begin{equation}
+    \sum_{a=1}^{N}\sum_{b=1}^{N}\epsilon_{ba}\delta\big[a|b\big]=\sum_{ab}\epsilon_{ba}\big[\delta \chi_a|\chi_b\big]+\epsilon_{ba}\big[\chi_a|\delta \chi_b\big]
+\end{equation}
+\begin{equation}
+    \begin{split}
+        \delta\mathcal{L}=&\sum_{a=1}^{N}\big[\delta\chi_a|h|\chi_a\big]+\sum_{a=1}^{N}\sum_{b=1}^{N}\big[\delta\chi_a\chi_a|\chi_b\chi_b\big]-\big[\delta\chi_a\chi_b|\chi_b\chi_a\big]\\
+        -&\sum_{a=1}^{N}\sum_{b=1}^{N}\epsilon_{ba}\big[\delta a|b\big]+\text{complex conjugate}=0\\
+        \delta\mathcal{L}=&\sum_{a=1}^{N}\int\,d\mathbf{x}_1\delta \chi_a^*(1)\Bigg[h(1)\chi_a(1)+\sum_{b=1}^{N}(\mathcal{J}_b(1)-\mathcal{K}_b(1))\chi_a(1)\\
+        -&\sum_{b=1}^{N}\epsilon_{ba}\chi_b(1)\Bigg]+\text{complex conjugate}=0
+    \end{split}
+\end{equation}
+\begin{equation}
+    \Bigg[h(1)+\sum_{b=1}^{N}(\mathcal{J}_b(1)-\mathcal{K}_b(1))\Bigg]\chi_a(1)=\sum_{b=1}^{N}\epsilon_{ba}\chi_b(1)
+\end{equation}
+\begin{equation}
+    f\ket{\chi_a}=\sum_{b=1}^{N}\epsilon_{ba}\ket{\chi_b}
+\end{equation}
+This result is not in the canonical eigenvalue form of (130), the reason is that any single determinant retains a certain degree of flexibility
+in the spin orbitals. The spin orbitals can be mxied among themselves without changing the exceptation value $E_0$.
+\subsubsection{The canonical Hartree-Fock equations}
+Now we consider a new set of spin orbitals that are obtained from an old set by an unitary transformation which preserves the orthonormal property.
+\begin{equation}
+    \chi_a^{'}=\sum_{b}\chi_b U_{ba}
+\end{equation}
+And we define matrix \textbf{$A$} and \textbf{$A^{'}$}
+\begin{equation}
+    \begin{split}
+        \mathbf{A^{'}}=\mathbf{AU}&=
+            \begin{bmatrix}
+                \chi_1(1)&\cdots&\chi_N(1)\\
+                \vdots&\quad&\vdots\\
+                \chi_1(N)&\cdots&\chi_N(N)
+            \end{bmatrix}
+            \begin{bmatrix}
+                U_{11}&\cdots&U_{1N}\\
+                \vdots&\quad&\vdots\\
+                U_{N1}&\cdots&U_{NN}
+            \end{bmatrix}\\
+            &=
+            \begin{bmatrix}
+                \chi_1^{'}(1)&\cdots&\chi_N^{'}(1)\\
+                \vdots&\quad&\vdots\\
+                \chi_1^{'}(N)&\cdots&\chi_N^{'}(N)
+            \end{bmatrix}
+    \end{split}    
+\end{equation}
+The single determinant can be written as
+\begin{align}
+    \ket{\Psi_0}&={(N!)}^{-1/2} \det(\mathbf{A})\\
+    \ket{\Psi_0^{'}}&=\det(\mathbf{U})\ket{\Psi_0}\\
+\end{align}
+Because the wave function is orthonormal
+\begin{align}
+    {\det(\mathbf{U})}^*\det(\mathbf{U})&=1\notag \\
+    \det(\mathbf{U})&=e^{i\phi}
+\end{align}
+The transformed determinant $\ket{\Psi_0^{'}}$ can at most differ from the original one by a phase factor. 
+Any expectation value is therefore invariant to an unitary transformation, thus the spin orbitals that make the
+total energy stationary are not unique. Now we can use this property to simplify equation (150), we begin with
+determining the effect of the unitary transformation on the Fock operator and Largange multipliers.\\
+The transformed sum of coulomb operators is
+\begin{align}
+    \sum_{a}\mathcal{J}_a^{'}(1)=&\sum_{a}\int\,d\mathbf{x}_2\chi_a^{{'}^*}(2)r_{12}^{-1}\chi_a^{'}(2)\notag \\
+    =&\sum_{bc}\bigg[\sum_{a}U_{ba}^*U_{ca}\bigg]\int\,d\mathbf{x}_2\chi_b^*(2)r_{12}^{-1}\chi_c(2)\notag \\
+    =&\sum_{bc}\delta_{bc}\int\,d\mathbf{x}_2\chi_b^*(2)r_{12}^{-1}\chi_c(2)\notag \\
+    =&\sum_{b}\int\,d\mathbf{x}_2\chi_b^*(2)r_{12}^{-1}\chi_b(2)\notag \\
+    =&\sum_{b}\mathcal{J}_b(1)
+\end{align}
+for exchange operator
+\begin{align}
+    \sum_{a}\mathcal{K}_a^{'}(1)\chi_b^{'}(1)=&\sum_{a}\int\,d\mathbf{x}_2\chi_a^{{'}^*}(2)r_{12}^{-1}\chi_b^{'}(2) \chi_a^{'}(1)\notag \\
+    \sum_{a}\mathcal{K}_a^{'}(1)=&\sum_{a}\bigg[\sum_{dc}U_{da}^*U_{cb}\bigg]\int\,d\mathbf{x}_2\chi_d^*(2)r_{12}^{-1}\chi_c(2) \notag \\
+    \sum_{a}\mathcal{K}_a^{'}(1)\chi_c(1)=&\sum_{d}\int\,d\mathbf{x}_2\chi_d^*(2)r_{12}^{-1}\chi_c(2)\chi_d(1)\notag \\
+    \sum_{a}\mathcal{K}_a^{'}(1)=&\sum_{d}\mathcal{K}_d(1)
+\end{align}
+Therefore, the Fock operator is invariant to a unitary transformation of the spin orbitals.
+\begin{equation}
+    f^{'}(1)=f(1)
+\end{equation}
+And for Largange multipliers
+\begin{align}
+    \bra{\chi_c}f\ket{\chi_a}&=\sum_{b=1}^{N}\epsilon_{ba}\braket{\chi_c|\chi_b}=\epsilon_{ca} \notag \\
+    \epsilon_{ca}^{'}&=\int\,d\mathbf{x}_1\chi_c^{'^{*}}(1)f(1)\chi_a^{'}(1) \notag \\
+    &=\sum_{bd}U_{bc}^*U_{da}\int\,d\mathbf{x}_1\chi_b^*(1)f(1)\chi_d(1) \notag \\
+    &=\sum_{bd}U_{bc}^* \epsilon_{bd} U_{da}
+\end{align}
+They are matrix elements of the Fock operator, and we can find a unitary matrix to diagonalize the matrix. So there
+must exist a set of spin orbitals $\{\chi_a^{'}\}$ for which the matrix is diagonal
+\begin{equation}
+    f\ket{\chi_a^{'}}=\epsilon_a^{'}\ket{\chi_a^{'}}
+\end{equation}
+This unique set is called the set of canonical spin orbitals. They are delocalized and form an irreducible representation
+of the point group of the molecule. We can also choose a unitary matrix so that the transformed spin orbitals is in some
+sense localized.
+\subsection{interpretation of Solutions to the Hartree-Fock Equations}
+\subsubsection{Orbital energies and Koopmans' theorem}
+For an N-electron system, minimization the energy leads to an eigenvalue equation for the N occupied spin orbitals. Once the
+occupies spin orbitals are known the Fock operator becomes a well-defined Hermitian operator, which have an infinite number
+of eigenfunctions.
+\begin{equation}
+    f\ket{\chi_j}=\epsilon_j\ket{\chi_j}\qquad j=1,2,\ldots,\infty
+\end{equation}
+The lowest orbital energies $\epsilon_a$ are the spin orbitals occupied in $\ket{\Psi_0}$ and the remaining infinite number of spin orbitals
+with higher energies $\epsilon_r$ are the virtual orbitals. 
+\begin{align}
+    \epsilon_a=&\bra{a}h\ket{a}+\sum_{b\neq a}^{N}\bra{ab}\ket{ab} \qquad\bra{aa}\ket{aa}=0 \\
+    \epsilon_r=&\bra{r}h\ket{r}+\sum_{b}^{N}\bra{rb}\ket{rb}
+\end{align}
+The $\epsilon_r$ has a special meaning, it's as if an electron had added to $\ket{\Psi_0}$ to produce an (N+1)-electron state and
+$\epsilon_r$ represented the energy of this extra electron.\\
+Simply adding up the orbital energies and comparing the result with ground state energy, we can find
+\begin{align}
+    \sum_{a}^{N}&=\sum_{a}^{N}\bra{a}h\ket{a}+\sum_{a}^{N}\sum_{b}^{N}\bra{ab}\ket{ab} \notag \\
+    E_0&=\sum_{a}^{N}\bra{a}h\ket{a}+\frac{1}{2}\sum_{a}^{N}\sum_{b}^{N}\bra{ab}\ket{ab} \notag \\
+    E_0&\neq\sum_{a}^{N}\epsilon_a
+\end{align}
+The reason is that when we add $\epsilon_a$ and $\epsilon_b$, we include the electron-electron twice.
+Suppose we consider removing an electron from the spin orbital $\chi_c$, in second quantization formalism
+the process can be written as
+\begin{equation}
+    \ket{ ^{N-1}\Psi_c}=a_c\ket{ ^N\Psi_0}
+\end{equation}
+The ionization potential of $\ket{ ^N\Psi_0}$ for this process is
+\begin{equation}
+    \mathbf{IP}={}^{N-1}E_c-{}^N E_0
+\end{equation}
+Since the state is different, the optimum spin orbitals are not identical. However, with our assumption that
+they are identical, we can calculate the energy difference easily
+\begin{equation}
+    \begin{split}
+        \mathbf{IP}&={}^{N-1}E_c-{}^N E_0\\
+        &=\sum_{a\neq c}^{N}\bra{a}h\ket{a}+\frac{1}{2}\sum_{a\neq c}^{N}\sum_{b\neq c}^{N}\bra{ab}\ket{ab}-\sum_{a}^{N}\bra{a}h\ket{a}-\frac{1}{2}\sum_{a}^{N}\sum_{b}^{N}\bra{ab}\ket{ab}\\
+        &=-\bra{c}h\ket{c}-\frac{1}{2}\sum_{a}^{N}\bra{ac}\ket{ac}-\frac{1}{2}\sum_{b}^{N}\bra{cb}\ket{cb}\\
+        &=-\bra{c}h\ket{c}-\sum_{b}^{N}\bra{cb}\ket{cb}\\
+        &=-\epsilon_c
+    \end{split}
+\end{equation}
+Thus occupied orbital energy represent the energy (with opposite sign) required to move an electron from that spin orbital.\\
+Now we can consider the process of adding an electron, it's easy to calculate the energy difference
+\begin{equation}
+    \mathbf{EA}={}^{N}E_0-{}^{N+1} E^r=-\bra{r}h\ket{r}-\sum_{b}^{N}\bra{rb}\ket{rb}=-\epsilon_r
+\end{equation} 
+The results were first obtained by Koopmans. This ``frozen orbital'' approximation assumes that the spin orbitals in $(N\pm 1)$-electron
+states and $N$-electron state are identical. After optimizing the spin orbitals of $(N\pm 1)$-electron states by performing a separate
+Hartree-Fock calculation, the energy ${}^{N-1}E_a$ and ${}^{N+1}E^r$ would be lower. In addition, the approximation of single determinant
+leads to errors, and the correlation effects will tend to cancel the error of ``frozen orbital'' approximation. In general, Koopmans' ionization
+potentials are reasonable first approximation to experimental ionization potentials but Koopmans's electron affinities are bad. Many neutral
+molecules will add an electron to form a stable negative ion. However, Hartree-Fock calculations on neutral molecules always give positive
+orbital energies for all virtual orbitals.
+\subsubsection{Brillouim's theorem}
+As is discussed in the last chapter, there are many determinants can be formed from a set of spin orbitals. Now we add singly excited
+determinants to represent the exact ground state wave function
+\begin{equation}
+    \ket{\Phi_0}=c_0\ket{\Psi_0}+\sum_{ra}c_a^r\ket{\Psi_a^r}+\cdots
+\end{equation}
+the coefficients are determined from the variation principle by diagonalizing the Hamiltonian matrix in the basis of the states $\{\Psi_0, \{\Psi_a^r\}\}$.
+\begin{equation}
+    \begin{bmatrix}
+        \bra{\Psi_0}\mathcal{H}\ket{\Psi_0} & \bra{\Psi_0}\mathcal{H}\ket{\Psi_a^r}\\
+        \bra{\Psi_a^r}\mathcal{H}\ket{\Psi_0} & \bra{\Psi_a^r}\mathcal{H}\ket{\Psi_a^r}
+    \end{bmatrix}
+    \begin{bmatrix}
+        c_0\\
+        c_a^r
+    \end{bmatrix}
+    =\mathcal{E}_0
+    \begin{bmatrix}
+        c_0\\
+        c_a^r
+    \end{bmatrix}
+\end{equation}
+\begin{equation}
+        \bra{\Psi_0}\mathcal{H}\ket{\Psi_a^r}=\bra{a}h\ket{r}+\sum_{b}^{N}\bra{ab}\ket{rb}=\bra{\chi_a}f\ket{\chi_r}
+\end{equation}
+The matrix element that mixes singly excited determinants is thus equal to an off-diagonal element of the Fock matrix.
+By definition, solving the Hartree-Fock equation requires the off-diagonal element $\bra{\chi_a}f\ket{\chi_r}=0$. The
+lowest solution is
+\begin{equation}
+    \begin{bmatrix}
+        E_0& 0\\
+        0 & \bra{\Psi_a^r}\mathcal{H}\ket{\Psi_a^r}
+    \end{bmatrix}
+    \begin{bmatrix}
+        1\\
+        0
+    \end{bmatrix}
+    =E_0
+    \begin{bmatrix}
+        1\\
+        0
+    \end{bmatrix}
+\end{equation}
+The Hartree-Fock ground state is ``stable'' since it can not be improved by mixing it with singly excited determinants.
+This does not mean there are no singly excited determinants in exact ground state, they can indirectly mix with the 
+Hartree-Fock ground state through the doubly excited determinants by the matrix elements $\bra{\Psi_a^r}\mathcal{H}\ket{\Psi_{ab}^{rs}}$ and
+$\bra{\Psi_{ab}^{rs}}\mathcal{H}\ket{\Psi_0}$. This result is called Brillouim's theorem.
+\subsection{Restricted Closed-Shell Hartree-Fock: The Roothaan \\Equation}
+To calculate the restricted Hartree-Fock wave functions, we consider the procedure for converting from the spin orbitals
+to spatial orbitals. The Hartree-Fock equations have a new form
+\begin{align}
+    f(1)\psi_j(1)\alpha(\omega_1)&=\epsilon_j\psi_j(1)\alpha(\omega_1)\\
+    \bigg[\int\,d\omega_1 \alpha^*(\omega_1)f(1)\alpha(\omega_1)\bigg]\psi_j(1)&=\epsilon_j\psi_j(1)
+\end{align}
+Let $f(\mathbf{r}_1)$ be the closed shell Fock operator
+\begin{equation}
+    f(\mathbf{r}_1)=\int\,d\omega_1\alpha^*(\omega_1)f(1)\alpha(\omega_1)
+\end{equation}
+\begin{equation}
+    \begin{split}
+        f(\mathbf{r}_1)\psi_j(\mathbf{r}_1)=&h(\mathbf{r}_1)\psi_j(\mathbf{r}_1)+\bigg[2\sum_{c}^{N/2}\int\,d\mathbf{r}_2\psi_c^*(\mathbf{r}_2)r_{12}^{-1}\psi_c(\mathbf{r}_2)\bigg]\psi_j(\mathbf{r}_1)\\
+        &-\bigg[\sum_{c}^{N/2}\int\,d\mathbf{r}_2\psi_c^*(\mathbf{r}_2)r_{12}^{-1}\psi_j(\mathbf{r}_2)\bigg]\psi_c(\mathbf{r}_1)\\
+        J_a(1)=&\int\,d\mathbf{r}_2\psi_a^*(2)r_{12}^{-1}\psi_a(2)\\
+        K_a(1)\psi_i(1)=&\bigg[\int\,d\mathbf{r}_2\psi_a^*(2)r_{12}^{-1}\psi_i(2)\bigg]\psi_a(1)
+    \end{split}
+\end{equation}
+The closed-shell spatial Hartree-Fock equation is just
+\begin{align}
+    f(1)&=h(1)+\sum_{a}^{N/2}2J_a(1)-K_a(1)\\
+    f(1)&\psi_j(1)=\epsilon_j\psi_j(1)\\
+    \epsilon_j&=h_{ii}+\sum_{b}^{N/2}2J_{jb}-K_{jb}
+\end{align}
+\subsubsection{The Roothaan equations}
+Now the calculation of molecular orbitals becomes equivalent to the problem of sloving the spatial integro-differential
+equation. Numerical solutions are common in atomic calculation, but for molecules, Roothaan contributes a method. By introducing
+a set of known spatial basis functions, the equation could be converted to a set of algebraic equations and solved by standard
+matrix techniques.\\
+Therefore, we introduce a set of K known functions and expand the unknown molecular orbitals
+\begin{equation}
+    \psi_i=\sum_{\mu=1}^{K}C_{\mu i}\phi_{\mu}
+\end{equation}
+If the set was complete, this would be an exact expansion. Unfortunately, one is always restricted to a finite set of K basis functions.
+As the basis set becomes more and more complete, the expansion leads to more and more accurate representations of the ``exact'' molecular
+orbitals. And the problem reduces to the calculation of the set of expansion coefficients $C_{\mu i}$. We can obtain aa matrix equation by
+substituting the linear expansion into Hartree-Fock equation
+\begin{align}
+    f(1)\sum_{v}C_{vi}\phi_v(1)&=\epsilon_i\sum_{v}C_{vi}\phi_v(1)\\
+    \sum_{v}C_{vi}\int\,d\mathbf{r}_1\phi_\mu^*f(1)\phi_v(1)&=\epsilon_i\sum_{v}C_{vi}\int\,d\mathbf{r}_1\phi_\mu^*\phi_v(1)
+\end{align}
+Now we define two matrices.\\
+The \textbf{overlap} matrix \textbf{S} has elements
+\begin{equation}
+    \mathbf{S}_{\mu v}=\int\,d\mathbf{r}_1\phi_\mu^*\phi_v(1)
+\end{equation}
+and is a $K \times K$ Hermitian matrix. The diagonal elements of $S$ are unity and the off-diagonal elements are numbers less than 1 in magnitude.
+Linear dependence in the basis set is assoicated with eigenvalues of the overlap matrix approaching zero. The matrix is sometimes called the metric matrix.\\
+The \textbf{Fock} matrix \textbf{F} has elements
+\begin{equation}
+    F_{\mu v}=\int\,d\mathbf{r}_1\phi_\mu^*f(1)\phi_v(1)
+\end{equation}
+and is also a $K \times K$ Hermitian matrix.\\
+With these definitions of \textbf{F} and \textbf{S} the equation can be written As
+\begin{equation}
+    \sum_{v}F_{\mu v}C_{v i}=\epsilon_i\sum_{v}C_{vi}S_{\mu v}
+\end{equation}
+These are \textbf{Roothaan equations}, which can be written as matrix equation
+\begin{equation}
+    \mathbf{FC}=\mathbf{SC\epsilon}    
+\end{equation}
+\begin{equation}
+    \mathbf{C}=
+    \begin{bmatrix}
+        C_{11}&\cdots& C_{1K}\\
+        \vdots&\qquad& \vdots\\
+        C_{K1}&\cdots& C_{KK}
+    \end{bmatrix}
+\end{equation}
+\begin{equation}
+    \mathbf{\epsilon}=
+        \begin{bmatrix}
+            \epsilon_1&0&\cdots&0\\
+            0&\epsilon_2&\cdots&0\\
+            0&0&\ddots&0\\
+            0&0&\cdots&\epsilon_K
+        \end{bmatrix}
+\end{equation}
+\subsubsection{The charge density}
+If an electron described by the spatial wave function $\psi_a(\mathbf{r})$, then the probability of finding that
+electron in a volume element $d\mathbf{r}$ at a point $\mathbf{r}$ is ${\lvert \psi_a(\mathbf{r})\rvert}^2 d\mathbf{r}$.
+The charge density is the probability distribution function ${\lvert \psi_a(\mathbf{r})\rvert}^2$. The total charge
+density is just
+\begin{equation}
+    \rho(\mathbf{r})=2\sum_{a}^{N/2}{\lvert \psi_a(\mathbf{r})\rvert}^2
+\end{equation}
+Now we insert the molecular orbital expansion into the expression.
+\begin{equation}
+    \begin{split}
+        \rho(\mathbf{r})&=2\sum_{a}^{N/2}{\lvert \psi_a(\mathbf{r})\rvert}^2\\
+        &=2\sum_{a}^{N/2}\sum_{v}^{K}C_{va}^*\phi_v^*(\mathbf{r})\sum_{\mu}^{K}C_{\mu a}^*\phi_\mu^*(\mathbf{r})\\
+        &=\sum_{\mu v}P_{\mu v}\phi_\mu(\mathbf{r})\phi_v^*(\mathbf{r})
+    \end{split}
+\end{equation}
+where we have defined a \textbf{density matrix} or \textbf{charge-density bond-order matrix}
+\begin{equation}
+    P_{\mu v}=2\sum_{a}^{N/2}C_{\mu a}C_{va}^*
+\end{equation}
+We can use this expression to indicate in an intuitive way how the Hartree-Fock procedure operates. We first guess a density
+matrix. Later we can use this charge density to calculate an effective one-electron poential $\mathcal{V}^{HF}(\mathbf{r}_1)$,
+We thus have the Fock operator and solve the equation to determine the wavefunctions. The new states can then be used to obtain
+a better approximation to the density. Repeat the procedure until the charge density no longer changes.
+\subsubsection{Expression of the Fock operator}
+\begin{equation}
+    \begin{split}
+        F_{\mu v}&=\int\,d\mathbf{r}_1\phi_\mu^*f(1)\phi_v(1)\\
+        &=\int\,d\mathbf{r}_1\phi_\mu^*h(1)\phi_v(1)+\int\,d\mathbf{r}_1\phi_\mu^*\big[2J_a(1)-K_a(1)\big]\phi_v(1)\\
+        &=H_{\mu v}^{core}+\sum_{a}^{N/2}2(\mu v|aa)-(\mu a|av)
+    \end{split}
+\end{equation}
+$H_{\mu v}^{core}$ is intergals involving the one-electron operator, it needs only to be evaluated once as it remains constant
+during the iterative calculation.\\
+Then we insert the linear expansion for the spatial orbitals into two-electron term and get
+\begin{equation}
+    \begin{split}
+        F_{\mu v}&=H_{\mu v}^{core}+\sum_{a}^{N/2}2(\mu v|aa)-(\mu a|av)\\
+        &=H_{\mu v}^{core}+\sum_{a}^{N/2}\sum_{\sigma\lambda}C_{\sigma a}C_{\lambda a}^*\big[2(\mu v|\sigma\lambda)-(\mu \sigma|\lambda v)\big]\\
+        &=H_{\mu v}^{core}+\sum_{\sigma\lambda}P_{\lambda\sigma}\big[(\mu v|\sigma\lambda)-\frac{1}{2}(\mu \sigma|v\lambda)\big]\\
+        &=H_{\mu v}^{core}+G_{\mu v}
+    \end{split}
+\end{equation}
+where $G_{\mu v}$ is the two-electron part of the Fock matrix, because of the large number of two-electron intergals, the major
+difficulty in a Hatree-Fock calculation is the evaluation and manipulation of these intergals.
+\subsubsection{Orthogonalization of the basis}
+Because the basis functions are not orthogonal to each other, the overlap matrix $\mathbf{S}$ is obtained in Roothaan's equations. In order
+to put the equations into the form of usual matrix eigenvalue problem, we need to consider procedures for orthogonalizing the basis functions.\\
+It will always be possible to find a transformation matrix $\mathbf{X}$ (not unitary) to form an orthonormal set
+\begin{align}
+    \psi_\mu^{'}&=\sum_{v}X_{v \mu}\phi_v\\
+    \int\,d\mathbf{r}\psi_\mu^{'^{*}}(\mathbf{r})\psi_v^{'}(\mathbf{r})&=\int\,d\mathbf{r}\bigg[\sum_{\lambda}X_{\lambda \mu}^*\phi_\lambda^*\bigg]
+    \bigg[\sum_{\sigma}X_{\sigma v}\phi_\sigma\bigg]\notag\\
+    &=\sum_{\lambda \sigma}X_{\lambda \mu}^*S_{\lambda \sigma}X_{\sigma v}=\delta_{\mu v}
+\end{align}
+It can be written as the matrix equation
+\begin{equation}
+    \mathbf{X^\dagger S X}=\mathbf{1}
+\end{equation}
+There are two ways of orthogonalizing the basis set in commun use. The first is called \textbf{symmetric orthogonalization}
+\begin{equation}
+    \mathbf{X}\equiv\textbf{S}^{-1/2}=\mathbf{Us^{-1/2}U^\dagger}
+\end{equation}
+where $\mathbf{s}$ is a diagonal matrix of the eigenvalues of $\mathbf{S}$.\\
+However, if there is linear dependence or near linear dependence in the basis set, then some of the eigenvalues will approach zero and will
+involve dividing by quantities that are nearly zero. Thus this method will lead to problems in numerical precision for basis sets with near
+linear dependence.\\
+The second way is called \textbf{canonical orthogonalization}
+\begin{equation}
+    \mathbf{X}=\mathbf{Us^{-1/2}}
+\end{equation}
+The procedure also has numerical problems with near linear dependence basis sets. To overcome the difficulty, we can order the positive eigenvalues
+$s_i$ in the order $s_1>s_2>s_3>\cdots$, Upon inspection we may decide the last $m$ of these are too small and will give numerical problems. Therefore,
+we truncate the transformation matrix
+\begin{equation}
+    \mathbf{\tilde{X}}=
+    \begin{bmatrix}
+        U_{11}s_1^{-1/2}&\cdots&U_{1(K-m)}s_{K-m}^{-1/2}\\
+        \vdots&\quad&\vdots\\
+        U_{K1}s_{1}^{-1/2}&\cdots&U_{K(K-m)}s_{K-m}^{-1/2}
+    \end{bmatrix}
+\end{equation}
+With this truncated matrix, we get only $K-m$ transformed orthogonal basis functions. In practice,
+one finds linear dependence problems with eigenvalues in the region $s_i \leq {10}^{-4}$.\\
+With the help of transformation matrix, we eliminate the overlap matrix in Roothaan's equations and could
+solve the equations just by diagonalizing the Fock matrix. However, we would still have to calculate all
+two-electron intergals using the new orbitals. In practice, it's very time consuming, we can solve the equations
+in a more efficient way. Consider a new coefficient matrix $\mathbf{C^{'}}$
+\begin{equation}
+    \mathbf{C^{'}}=\mathbf{X^{-1}C}\qquad\mathbf{C}=\mathbf{XC^{'}}
+\end{equation}
+If we have eliminated the linear dependencies, $\mathbf{X}$ will possess an inverse, and the equations can be written as
+\begin{equation}
+    \begin{split}
+        \mathbf{FXC^{'}}&=\mathbf{SXC^{'}\epsilon}\\
+        \mathbf{X^\dagger FXC^{'}}&=\mathbf{X^\dagger SXC^{'}\epsilon}\\
+        \mathbf{X^\dagger FX}&=\mathbf{F^{'}}\\
+        \mathbf{F^{'}C^{'}}&=\mathbf{C^{'}\epsilon}
+    \end{split}
+\end{equation}
+\subsubsection{SCF procedure}
+\begin{enumerate}
+    \item Specify a molecule with a set of nuclear coordinates $\{\mathbf{R_A}\}$, atomic numbers $\{\mathbf{Z_A}\}$, 
+    a numebr of electrons $N$ and a basis set $\{\phi_{\mu}\}$.     
+    \item Calculate  all required intergals, $S_{\mu v}, H_{\mu v}^{core}$ and $(\mu v|\lambda \sigma)$.
+    \item Diagonalizing $\mathbf{S}$ and obtain $\mathbf{X}$.
+    \item Obtain a guess at $\mathbf{P}$. (The simplest possible guess is a null matrix.)
+    \item Calculate $\mathbf{G}$. (The most time-consuming step)
+    \item Obatin $\mathbf{F}$.
+    \item Calculate $\mathbf{F^{'}}$.
+    \item Diagonalizing $\mathbf{F^{'}}$ to obtain $\mathbf{C^{'}}$ and $\mathbf{\epsilon}$.
+    \item Calculate $\mathbf{C}$.
+    \item Form a new $\mathbf{P}$ from $\mathbf{C}$.
+    \item Determine whether the procedure has converged, i.e., determine whe-\\ther the $\mathbf{P}$ in step (10) is the same as the previous $\mathbf{P}$ within a specified criterion.
+    \item If the procedure has converged, then use the resultant solution to calculate other quantities. 
+\end{enumerate}
+\subsubsection{Expectation values and population analysis}
+There are a number of ways we might use our wave function or analyze the results of our calculation. First, the total electronic energy can be written as
+\begin{equation}
+    \begin{split}
+        E_0&=2\sum_{a}^{N/2}h_{aa}+\sum_{a}^{N/2}\sum_{b}^{N/2}2J_{ab}-K{ab}\\
+        &=\sum_{a}^{N/2}(h_{aa}+f_{aa})\\
+        &=\frac{1}{2}\sum_{\mu}\sum_{v}P_{\mu v}(H_{\mu v}^{core}+F_{\mu v})
+    \end{split}
+\end{equation}
+We obtain a formula for the energy, which is readily evaluated from quantities available at any stage of the SCF iteration procedure.\\
+By adding the nuclear-nuclear repulsion to the electronic energy, we obatin the total energy. It is commonly the quantity of most interest
+in structure determinations because the equilibrium geometry occurs when total energy is minimum.\\
+Most of the properties of molecules such as dipole moment, field gradient at a nucleus, etc., are described by sums of one-electron operators, and
+the expectation value can be written as
+\begin{equation}
+    \braket{O_1}=\sum_{a}^{N/2}\bra{\psi_a}h\ket{\psi_a}=\sum_{\mu v}P_{\mu v}(v|h|\mu)
+\end{equation}
+We use the dipole moment ($\vec{\mu}=\sum_{i}q_i\mathbf{r}_i$) to illustrate such a calculation.
+\begin{align}
+    \vec{\mu}&=\bra{\Psi_0}-\sum_{i=1}^{N}\mathbf{r}_i\ket{\Psi_0}+\sum_{A}Z_A\mathbf{R}_A\notag\\
+    &=-\sum_{\mu v}P_{\mu v}(v|\mathbf{r}|\mu)+\sum_{A}Z_A\mathbf{R}_A
+\end{align}
+The number of electrons can also be expressed with charge density
+\begin{align}
+    \rho(\mathbf{r})&=2\sum_{a}^{N/2}{\lvert \psi_a(\mathbf{r})\rvert}^2=\sum_{\mu v}P_{\mu v}\phi_\mu(\mathbf{r})\phi_v^*(\mathbf{r})\notag\\
+    N&=\int\,d\mathbf{r}\rho(\mathbf{r})=\sum_{\mu v}P_{\mu v}\int\,d\mathbf{r}\phi_\mu(\mathbf{r})\phi_v^*(\mathbf{r})\notag \\
+    N&=\sum_{\mu v}P_{\mu v}S_{v \mu}=\sum_{\mu}{(\mathbf{PS})}_{\mu \mu}=tr\mathbf{PS}
+\end{align}
+Therefore, it's possible to interpet ${(\mathbf{PS})}_{\mu \mu}$ as the number of electrons to be assoicated with $\phi_{\mu}$. It's called
+\textbf{Mulliken population analysis}. Assuming the basis functions are centered on atomic nuclei, the net charge assoicated an atom is then
+given by
+\begin{equation}
+    q_A=Z_A-\sum_{\mu \in A}{(\mathbf{PS})}_{\mu \mu}
+\end{equation}
+For \textbf{Lo\"wdin popluation analysis}, we just symmetrically orthogonalized basis set,
+\begin{align}
+    N&=\sum_{\mu}{(\mathbf{S^{1/2}PS^{1/2}})}_{\mu \mu}\\
+    q_A&=Z_A-\sum_{\mu \in A}{(\mathbf{S^{1/2}PS^{1/2}})}_{\mu \mu}
+\end{align}
+\subsection{Model calculation}
+\subsubsection{Basis set}
+Only two types of basis functions have found commonly use. The first one is \textbf{Slater-type function}
+\begin{equation}
+    \phi_{1s}^{SF}(\zeta,\mathbf{r-R_A})={(\zeta^3/\pi)}^{1/2}e^{-\zeta \lvert \mathbf{r-R_A} \rvert}
+\end{equation}
+The second one is \textbf{Gaussian-type function}
+\begin{equation}
+    \phi_{1s}^{GF}(\alpha,\mathbf{r-R_A})={(2\alpha/\pi)}^{3/4}e^{-\alpha {\lvert \mathbf{r-R_A} \rvert}^2}
+\end{equation}
+The 2s, 3d, etc.functions are generalizations of above form that have polynomials in the components of $\mathbf{r-R_A}$
+multiplying the same exponential fall-off. The orbital exponents ($\zeta, \alpha$), which are positive numbers larger than
+zero, determine the diffuseness or ``size'' of the basis functions; a large exponent implies a small dense function, a\
+small exponent implies a large diffuse function. The major differences between two functions occur at $r=0$ and at large $r$.
+At $r=0$, the Slater function has a finite slope and the Gaussian function has a zero slope. At large values of $r$, the
+Gaussian function decays much more rapidly than the Slater function.\\
+Slater functions describe the qualitative features of the molecular orbitals more correctly, but the intergals are relatively
+easy to evaluate with Gaussian basis functions. However, there is a problem that Gaussian functions are not optimum basis functions
+and have functional behavior different from the known functional behavior of molecular orbitals. One way to slove it is to use 
+as basis functions fixed linear combinations of the primitive Gaussian functions. These linear combination, called \textbf{contractions},
+lead to \textbf{contracted Gaussian functions},
+\begin{equation}
+    \phi_\mu^{CGF}(\mathbf{r-R_A})=\sum_{p=1}^{L}d_{p\mu}\phi_{p}^{GF}(\alpha_{p\mu}, \mathbf{r-R_A})
+\end{equation}
+where $L$ is the length of the contraction and $d_{p\mu}$ is a contraction coefficient. By a proper choice of the parameters, the
+contracted Gaussian function can be made to assume any functional form with the primitive functions used. A procedure that has come into
+wide use is to fit the Slater orbital to a linear combination of $N=1,2,3,\ldots$ primitive Gaussian functions. This is the STO-NG procedure.\\
+We therefore need to find the coefficient $d_{p\mu}$ and exponents $\alpha_{p\mu}$ that provide the best fit. The fitting criterion is minimizing
+the integral
+\begin{equation}
+    I=\int\,d\mathbf{r}{\big[\phi_{1s}^{SF}(\zeta=1.0,\mathbf{r})-\phi_{1s}^{CGF}(\zeta=1.0,STO-NG,\mathbf{r})\big]}^2
+\end{equation}
+Since the two functions are renormalized, we can maximize the integral
+\begin{equation}
+    S=\int\,d\mathbf{r}\phi_{1s}^{SF}(\zeta=1.0,\mathbf{r})\phi_{1s}^{CGF}(\zeta=1.0,STO-NG,\mathbf{r})
+\end{equation}
+And the appropriate contraction exponents $\alpha$ for fitting to a Slater function with orbital exponent $\zeta$ are thus
+\begin{equation}
+    \alpha=\alpha(\zeta=1.0)\times\zeta^2
+\end{equation}
+\subsection{Polyatomic basis sets}
+\subsubsection{Double zeta basis sets}
+A minimal set has rather limited variational flexibility particularly if exponents are not optimized.
+The first step in improving upon the minimal set involves using two functions for each of the minimal
+basis functions. The $4-31$G basis set is not exactly a double zeta basis since only the valence functions
+are doubled and a single function is still used for each inner shell orbital. The $4-31$G acronym implies
+that the valence basis functions are contractions of three primitive Gaussian (the inner function) and one
+primitive Gaussian (the outer function), whereas the inner shell functions are contractions of four primitive
+Gaussians.
+\subsubsection{Polarized basis sets}
+The next step beyond double zeta usually involves adding polarization functions. The $6-31\text{G}^*$ and
+$6-31\text{G}^{**}$ basis sets closely resemble the $4-31\text{G}$ with $\text{d-type}$ basis function added
+to the heavy atoms (*) or $\text{d-type}$ added to the heavy atoms and $\text{p-type}$ added to hydrogen (**).\\
+The $\text{d-type}$ functions are a single set of uncontracted 3d primitive Gaussians. For computational convenience 
+there are ``six 3d functions'' per atom——$3d_{xx},3d_{yy},3d_{zz},3d_{xy}.3d_{yz},3d_{xz}$. These
+six, the Cartesian Gaussians, are linear combinations of the usual five 3d functions and a 3s function.
+\subsection{Unrestricted Open-shell HF\@: The Pople-Nesbet Equations}
+In unrestricted open-shell HF, the Fock operator is $f^\alpha(1), f^\alpha(1)$,
+\begin{equation}
+    \begin{split}
+        f^\alpha(1)&=h(1)+\sum_{a}^{N^\alpha}\Big[J^\alpha_a(1)-K^\alpha_a(1)\Big]+\sum_{a}^{N^\beta}J^\beta_a(1)\\
+        f^\beta(1)&=h(1)+\sum_{a}^{N^\beta}\Big[J^\beta_a(1)-K^\beta_a(1)\Big]+\sum_{a}^{N^\alpha}J^\alpha_a(1)
+    \end{split}
+\end{equation}
+the sum over the $N^\alpha$ orbitals $\psi_a^\alpha$ in the first equation includes the interaction of an $\alpha$ with
+it self. However, since
+\begin{equation}
+    \Big[J^\alpha_a(1)-K^\alpha_a(1)\Big]\psi_a^\alpha(1)=0
+\end{equation}
+the self-interaction is eliminated. 
+Before writing down expressions for the unrestricted orbital energies and total energy, we need to define some new terms.
+\begin{gather}
+    h_{ii}^\alpha=(\psi_i^\alpha|h|\psi_i^\alpha)\qquad h_{ii}^\beta=(\psi_i^\beta|h|\psi_i^\beta)\\
+    J_{ij}^{\alpha\beta}=J_{ji}^{\beta\alpha}=(\psi_i^\alpha|J_j^\beta|\psi_i^\alpha)=(\psi_j^\beta|J_i^\alpha|\psi_j^\beta)=(\psi_i^\alpha\psi_i^\alpha|\psi_j^\beta\psi_j^\beta)\\
+    K_{ij}^{\alpha\alpha}=(\psi_i^\alpha|K_j^\beta|\psi_i^\alpha)=(\psi_j^\beta|K_i^\alpha|\psi_j^\beta)=(\psi_i^\alpha\psi_i^\alpha|\psi_j^\beta\psi_j^\beta)
+\end{gather}
+The total restricted electronic energy can now be written as
+\begin{equation}
+    \begin{split}
+        E_0=&\sum_{a}^{N^\alpha}h_{aa}^\alpha+\sum_{a}^{N^\beta}h_{aa}^\beta+\frac{1}{2}\sum_{a}^{N^\alpha}\sum_{b}^{N^\alpha}(J_{ab}^{\alpha\alpha}-K_{ab}^{\alpha\alpha})++\frac{1}{2}\sum_{a}^{N^\beta}\sum_{b}^{N^\beta}(J_{ab}^{\beta\beta}-K_{ab}^{\beta\beta})\\
+        &+\sum_{a}^{N^\alpha}\sum_{b}^{N^\beta}J_{ab}^{\alpha\beta}
+    \end{split}
+\end{equation}
+To slove the unrestricted HF, we introduce the expansion of molecular orbitals with the set $\{\phi_\mu\}$,
+\begin{equation}
+    \begin{split}
+        \psi_i^\alpha=\sum_{\mu=1}^{K}C_{\mu i}^\alpha\phi_\mu\\
+    \psi_i^\beta=\sum_{\mu=1}^{K}C_{\mu i}^\beta\phi_\mu    
+    \end{split}
+\end{equation}
+With the same procedure of restricted HF, the Roothaan equation has changed
+\begin{equation}
+    \begin{split}
+        \mathbf{F}^\alpha\mathbf{C}^\alpha=\mathbf{S}\mathbf{C}^\alpha\epsilon^\alpha\\
+        \mathbf{F}^\beta\mathbf{C}^\beta=\mathbf{S}\mathbf{C}^\beta\epsilon^\beta
+    \end{split}
+\end{equation}
+And the charge density of an unrestricted wave function is
+\begin{equation}
+    \rho^T(\mathbf{r})=\rho^\alpha(\mathbf{r})+\rho^\beta(\mathbf{r})
+\end{equation}
+and we can also define a spin density $\rho^S(\mathbf{r})$ by
+\begin{equation}
+    \rho^S(\mathbf{r})=\rho^\alpha(\mathbf{r})-\rho^\beta(\mathbf{r})
+\end{equation}
+The density matrices have the relation
+\begin{align}
+    \mathbf{P}^T=\mathbf{P}^\alpha+\mathbf{P}^\beta\\
+    \mathbf{P}^S=\mathbf{P}^\alpha-\mathbf{P}^\beta
+\end{align}
+With the definition of density matrices, we can simply obtain expressions for the elements of $\mathbf{F}^\alpha, \mathbf{F}^\beta$.
+\begin{equation}
+    \begin{split}
+        F_{\mu v}^\alpha=&H_{\mu v}^{core}+\sum_{a}^{N^\alpha}\sum_{\sigma\lambda}C^\alpha_{\sigma a}{(C^\alpha_{\lambda a})}^*\big[(\mu v|\sigma\lambda)-(\mu \sigma|\lambda v)\big]\\
+        &+\sum_{a}^{N^\beta}\sum_{\sigma\lambda}C^\beta_{\sigma a}{(C^\beta_{\lambda a})}^*(\mu v|\sigma \lambda)\\
+        =&H_{\mu v}^{core}+\sum_{\sigma\lambda}P^T_{\lambda\sigma}(\mu v|\sigma\lambda)-P^\beta_{\lambda \sigma}(\mu \lambda|\sigma v)\\
+        F_{\mu v}^\beta=&H_{\mu v}^{core}+\sum_{a}^{N^\beta}\sum_{\sigma\lambda}C^\beta_{\sigma a}{(C^\beta_{\lambda a})}^*\big[(\mu v|\sigma\lambda)-(\mu \sigma|\lambda v)\big]\\
+        &+\sum_{a}^{N^\beta}\sum_{\sigma\lambda}C^\alpha_{\sigma a}{(C^\alpha_{\lambda a})}^*(\mu v|\sigma \lambda)\\
+        =&H_{\mu v}^{core}+\sum_{\sigma\lambda}P^T_{\lambda\sigma}(\mu v|\sigma\lambda)-P^\alpha_{\lambda \sigma}(\mu \lambda|\sigma v)\\
+    \end{split}
+\end{equation}
+In SCF procedure, we just change the initial guess at $\mathbf{P}$ to the initial guess at $\mathbf{P}^\alpha, \mathbf{P}^\beta$. If $N^\alpha\neq N^\beta$,
+all subsequent iterations will have $\mathbf{P}^\alpha\neq\mathbf{P}^\beta$ and lead to an unrestricted solution. However, when $N^\alpha=N^\beta$, restricted 
+and unrestricted solution both exist, and the inital guess will strongly determine to which solution the iterations lead.
+\section{Configuration interaction}
+\subsection{The Structure of the Full CI Matrix}
+In the previous chapter, we can use many-electron wave functions as a basis to expand the exact wav function, which is called full CI wave function.
+\begin{equation}
+    \ket{\Phi_0}=c_o\ket{\Psi_0}+\sum_{ar}c_a^r\ket{\Psi_a^r}+\sum_{\stackrel{a<b}{r<s}}c_{ab}^{rs}\ket{\Psi_{ab}^{rs}}+\sum_{\stackrel{a<b<c}{r<s<t}}c_{abc}^{rst}\ket{\Psi_{abc}^{rst}}+\cdots
+\end{equation}
+When doing formal manipulation it's convenient to remove the restrictions on the summation indices.
+\begin{equation}
+    \begin{split}
+        \ket{\Phi_0}=&c_o\ket{\Psi_0}+{(\frac{1}{1!})}^2\sum_{ar}c_a^r\ket{\Psi_a^r}+{(\frac{1}{2!})}^2\sum_{{\stackrel{ab}{rs}}}c_{ab}^{rs}\ket{\Psi_{ab}^{rs}}\\
+        &+{(\frac{1}{3!})}^2\sum_{\stackrel{abc}{rst}}c_{abc}^{rst}\ket{\Psi_{abc}^{rst}}+{(\frac{1}{4!})}^2\sum_{\stackrel{abcd}{rstu}}c_{abcd}^{rstu}\ket{\Psi_{abcd}^{rstu}}+\cdots
+    \end{split}
+\end{equation}
+The total number of n-tuply excited determinants is extremely large, fortunately we can eliminate part of them (always not enough) by expoliting the fact there is no mixing of wave function with different spin.\\
+The difference between the energy of full CI wave function and the Hartree-Fock energy within the same basis is called \textbf{the basis set correlation energy}. It constitutes a benchmark, for a given basis set,
+full CI is the best one can do.\\
+To examine the structure of full CI matrix, we can rewrite the full CI wave function
+\begin{equation}
+    \ket{\Phi_0}=c_0\ket{\Psi_0}+c_S\ket{S}+c_D\ket{D}+c_T\ket{T}+c_Q\ket{Q}+\cdots
+\end{equation}
+and the matrix is presented
+\begin{equation}
+    \begin{bmatrix}
+        \bra{\Psi_0}\mathcal{H}\ket{\Psi_0}&0&\bra{\Psi_0}\mathcal{H}\ket{D}&0&0&\cdots\\
+        \quad&\bra{S}\mathcal{H}\ket{S}&\bra{S}\mathcal{H}\ket{D}&\bra{S}\mathcal{H}\ket{T}&0&\cdots\\
+        \quad&\quad&\bra{D}\mathcal{H}\ket{D}&\bra{D}\mathcal{H}\ket{T}&\bra{D}\mathcal{H}\ket{Q}&\cdots\\
+        \quad&\quad&\quad&\bra{T}\mathcal{H}\ket{T}&\bra{T}\mathcal{H}\ket{Q}&\cdots\\
+        \quad&\quad&\quad&\quad&\bra{Q}\mathcal{H}\ket{Q}&\cdots
+    \end{bmatrix}
+\end{equation}
+Some observations are as follows:
+\begin{enumerate}
+    \item All matrix elements between Slater determinants which differ by more than two spin orbitals are zero. Therefore, the blocks
+          that are not zero are sparse.
+    \item There is no coupling between the HF ground state and single excitations, single excitations have a very small effect on energy
+          but do influence the description of one-electron properties such as dipole moment.
+    \item For small systems, double excitations play a predominant role in determining the correlation energy.
+\end{enumerate}
+\subsubsection{Intermediate normalization}
+When $\ket{\Psi_0}$ is a reasonable approximation to $\ket{\Phi_0}$, the coefficient $c_0$ in the CI expansion will be much larger than any of
+the others. It's convenient to write $\ket{\Phi_0}$ as an intermediate normalized form
+\begin{equation}
+    \ket{\Phi_0}=\ket{\Psi_0}+\sum_{ar}c_a^r\ket{\Psi_a^r}+\sum_{\stackrel{a<b}{r<s}}c_{ab}^{rs}\ket{\Psi_{ab}^{rs}}+\sum_{\stackrel{a<b<c}{r<s<t}}c_{abc}^{rst}\ket{\Psi_{abc}^{rst}}+\cdots
+\end{equation}
+It has the property that $\braket{\Psi_0|\Phi_0}=1$. Although $\ket{\Phi_0}$ is not normalized, we can multiply each term by a constant to normalized it. The reason we introduce it is simplify
+the description of correlation energy.
+\begin{gather}
+    (\mathcal{H}-E_0)\ket{\Phi_0}=E_{corr}\ket{\Phi_0} \notag\\
+    \bra{\Psi_0}\mathcal{H}-E_0\ket{\Phi_0}=\bra{\Psi_0}E_{corr}\ket{\Phi_0}=E_{corr}
+\end{gather}
+Now we consider the expansion of $\ket{\Phi_0}$
+\begin{equation}
+    \begin{split}
+        E_{corr}&=\bra{\Psi_0}\mathcal{H}-E_0\ket{\Phi_0}=\bra{\Psi_0}\mathcal{H}-E_0\big[\ket{\Psi_0}+\sum_{ar}c_a^r\ket{\Psi_a^r}+\sum_{\stackrel{a<b}{r<s}}c_{ab}^{rs}\ket{\Psi_{ab}^{rs}}\big]\\
+        &=\sum_{\stackrel{a<b}{r<s}}c_{ab}^{rs}\bra{\Psi_0}\mathcal{H}\ket{\Psi_{ab}^{rs}}
+    \end{split}
+\end{equation}
+However, it does not mean that only double excitations need to be considered. The coefficients $\{c_{ab}^{rs}\}$ are affected by the presence of other excitations.
+\begin{gather}
+    \bra{\Psi_a^r}\mathcal{H}-E_0\ket{\Phi_0}=E_{corr}\braket{\Psi_a^r|\Phi_0}\notag\\
+    \sum_{ar}c_a^r\bra{\Psi_a^r}\mathcal{H}-E_0\ket{\Phi_a^r}+\sum_{\stackrel{a<b}{r<s}}c_{ab}^{rs}\bra{\Psi_a^r}\mathcal{H}\ket{\Psi_{ab}^{rs}}\notag\\
+    +\sum_{\stackrel{a<b<c}{r<s<t}}c_{abc}^{rst}\bra{\Psi_a^r}\mathcal{H}\ket{\Psi_{abc}^{rst}}=c_a^r E_{corr}
+\end{gather}
+If we continue the above procedure, we would end up with a hierarchy of equations that must be solved simultaneously to obtain the correlation energy. This set of
+coupled equations is extremely large if all excitations are included. This is another way of saying full CI matrix is extremely large.\\
+Now we can apply the formalism to the minimal basis $H_2$ model. In chapter 1.3.1, we obtain the full CI equation and the full CI matrix
+\begin{equation}
+    \ket{\Phi}=c_0\ket{\Psi_0}+c_{1\bar{1}}^{2\bar{2}}\ket{\Psi_{1\bar{1}}^{2\bar{2}}}=c_0\ket{\Psi_0}+c_{12}^{34}\ket{\Psi_{12}^{34}}
+\end{equation}
+\begin{equation}
+    \mathbf{H}=
+    \begin{bmatrix}
+        \bra{\Psi_0}\Hat{H}\ket{\Psi_0} & \bra{\Psi_0}\Hat{H}\ket{\Psi_{12}^{34}}\\
+        \bra{\Psi_{12}^{34}}\Hat{H}\ket{\Psi_0} & \bra{\Psi_{12}^{34}}\Hat{H}\ket{\Psi_{12}^{34}}
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        2h_{11}+J_{11} & K_{12}\\
+        K_{12} & 2h_{22}+J_{22}
+    \end{bmatrix}
+\end{equation}
+Using the HF orbital energies, the diagonal matrix elements can be rewritten as
+\begin{align}
+    \bra{\Psi_0}\Hat{H}\ket{\Psi_0}&=2\epsilon_1-J_{11}\\
+    \bra{\Psi_{12}^{34}}\Hat{H}\ket{\Psi_{12}^{34}}&=2\epsilon_2-4J_{12}+J_{22}+2K_{12}
+\end{align}
+Having evaluated the matrix elements, we hope to find the lowest eigenvalue of the matrix
+\begin{gather}
+    E_{corr}=c\bra{\Psi_0}\mathcal{H}\ket{\Psi_{12}^{34}}=cK_{12}\\
+    c\bra{\Psi_{12}^{34}}\mathcal{H}-E_0\ket{\Psi_{12}^{34}}+\bra{\Psi_{12}^{34}}\mathcal{H}\ket{\Psi_0}=cE_{corr}\notag\\
+    2\Delta:=\bra{\Psi_{12}^{34}}\mathcal{H}-E_0\ket{\Psi_{12}^{34}}=2(\epsilon_2-\epsilon_1)-4J_{12}+J_{11}+J_{22}+2K_{12}\notag \\
+    K_{12}+2\Delta c=cE_{corr}
+\end{gather}
+By solving the above two equations we can obtain the correlation energy
+\begin{equation}
+    E_{corr}=\Delta-{(\Delta^2-K^2_{12})}^{1/2}
+\end{equation}
+\subsection{Double excited CI}
+Because of the large size of full CI matrix, we always consider part of excitation wave functions which is called truncated CI. Here we talk about the doubly excited CI (DCI) using one-electron basis. The reason why we do not consider SDCI (signly and doubly excitations)
+is the effect of single excitations and their number are both much smaller than double excitations. They can be included without 
+complicating the calculations, but to keep formalism as simple as possible we ignore them.\\
+The intermediate normalized function is
+\begin{gather}
+    \ket{\Phi_{DCI}}=\ket{\Psi_0}+\sum_{\stackrel{a<b}{r<s}}c_{ab}^{rs}\ket{\Psi_{ab}^{rs}}
+\end{gather}
+To obtain the correlation energy we solve two equations
+\begin{equation}
+    \begin{split}
+        \sum_{\stackrel{a<b}{r<s}}c_{ab}^{rs}\bra{\Psi_0}\mathcal{H}\ket{\Psi_{ab}^{rs}}=&E_{corr}\\
+        \bra{\Psi_{ab}^{rs}}\mathcal{H}\ket{\Psi_0}+\sum_{\stackrel{a<b}{r<s}}c_{ab}^{rs}\bra{\Psi_{ab}^{rs}}\mathcal{H}-E_0\ket{\Psi_{ab}^{rs}}=&c_{ab}^{rs}E_{corr}
+    \end{split}
+\end{equation}
+by defing matrices
+\begin{equation}
+    \begin{split}
+        \mathbf{B}&=\bra{\Psi_{ab}^{rs}}\mathcal{H}\ket{\Psi_0}\\
+        \mathbf{D}&=\bra{\Psi_{ab}^{rs}}\mathcal{H}-E_0\ket{\Psi_{ab}^{rs}}\\
+        \mathbf{c}&=c_{ab}^{rs}
+    \end{split}
+\end{equation}
+we can obatin the matrix equation
+\begin{equation}
+    \begin{bmatrix}
+        0&\mathbf{B}^\dagger\\
+        \mathbf{B}&\mathbf{D}
+    \end{bmatrix}
+    \begin{bmatrix}
+        1\\
+        \mathbf{c}
+    \end{bmatrix}
+    =E_{corr}
+    \begin{bmatrix}
+        1\\
+        \mathbf{c}
+    \end{bmatrix}
+\end{equation}
+Even for DCI it's not practical to include all possible double excitations. Thus we should devise a procedure for selecting
+the most important configurations in advance. A simple way is to examine a perturbation treatment of this CI eigenvalue problem.
+By solving the two equations, we can obtain
+\begin{equation}
+    E_{corr}=-\mathbf{B}^\dagger{(\mathbf{D}-\mathbf{I}E_{corr})}^{-1}\mathbf{B}
+\end{equation}
+Since $E_{corr}$ appears on both sides of the equation an iterative procedure must be used. And the correlation energy is small
+compared to the difference between the energy of a doubly exicted configuration and $E_0$. We can set $E_{corr}=0$ on the right side
+of the equation to obtain
+\begin{equation}
+    E^{'}_{corr}=-\mathbf{B}^\dagger{\mathbf{D}}^{-1}\mathbf{B}
+\end{equation}
+Then repeat the above procedure until the convergence is found. When $\mathbf{d}$ is very large, it's hard to compute the inverse,
+we can assume $\mathbf{d}$ is diagonal to simplify the calculation. Thus the correlation energy can be written as
+\begin{equation}
+    E_{corr}=-\sum_{\stackrel{a<b}{r<s}}\frac{\bra{\Psi_0}\mathcal{H}\ket{\Psi_{ab}^{rs}}\bra{\Psi_{ab}^{rs}}\mathcal{H}\ket{\Psi_0}}{\bra{\Psi_{ab}^{rs}}\mathcal{H}-E_0\ket{\Psi_{ab}^{rs}}}
+\end{equation}
+Now we can easily identify the contribution of the double excitation $\ket{\Psi_{ab}^{rs}}$.
+\subsection{Natrual Orbitals and the One-particle Reduced Density Matrix}
+Up to this point we have focused on configurations formed from a set of canonical spin orbitals. The resulting CI expansion unfortunately
+turns out to be rather slowly converge. So we introduce a new set of oribtais called \textbf{natrual orbitals}. In order to define natrual
+orbitals, we begin with the reduced density matrix of N-electron system.\\
+If we are only interested in the probability of finding an electron in $d\mathbf{x}_1$ at $\mathbf{x}_1$, independent of where the other
+electrons are, then w must average over all coordinates of the other electrons. Thus we have the \textbf{reduced density function} by integrating
+over $\mathbf{x}_2,\mathbf{x}_3,\ldots,\mathbf{x}_N$
+\begin{equation}
+    \rho(\mathbf{x}_1)=N\int\,d\mathbf{x}_2\cdots d\mathbf{x}_N\Phi(\mathbf{x}_1,\ldots,\mathbf{x}_N)\Phi^*(\mathbf{x}_1,\ldots,\mathbf{x}_N)
+\end{equation}
+where $N$ is the normalization factor
+\begin{equation}
+    \int\,d\mathbf{x}_1\rho(\mathbf{x}_1)=N
+\end{equation}
+Then we generalize the density function $\rho(\mathbf{x}_1)$ to a density matrix $\gamma(\mathbf{x}_1,\mathbf{x}_1^{'})$ defined as
+\begin{equation}
+    \gamma(\mathbf{x}_1,\mathbf{x}_1^{'})=N\int\,d\mathbf{x}_2\cdots d\mathbf{x}_N\Phi(\mathbf{x}_1,\ldots,\mathbf{x}_N)\Phi^*(\mathbf{x}_1^{'},\ldots,\mathbf{x}_N)
+\end{equation}
+it's called \textbf{first-order reduced density matrix} or \textbf{one-electron reduced density matrix}. The diagonal of the matrix is the density function.\\
+\begin{equation}
+    \gamma(\mathbf{x}_1,\mathbf{x}_1)=\rho(\mathbf{x}_1)
+\end{equation}
+Since $\gamma(\mathbf{x}_1,\mathbf{x}_1^{'})$ is a function of two variables, it can be expanded in the orthonormal basis of Hartree-Fock
+orbitals as
+\begin{gather}
+    \gamma(\mathbf{x}_1,\mathbf{x}_1^{'})=\sum_{ij}\chi_i(\mathbf{x}_1)\gamma_{ij}\chi_j^*(\mathbf{x}_1)\\
+    \gamma_{ij}=\int\,d\mathbf{x}_1d\mathbf{x}_1^{'}\chi_i(\mathbf{x}_1)\gamma(\mathbf{x}_1,\mathbf{x}_1^{'})\chi_j^*(\mathbf{x}_1)
+\end{gather}
+where matrix $\mathbf{\gamma}$ is a discrete representation of the reduced matrix in the orthonormal basis $\{\chi_i\}$.\\
+The special case is that $\Phi$ is the Hartree-Fock ground state wavefunction $\Psi_0$, the density matrix can be written as
+\begin{equation}
+    \gamma^{HF}(\mathbf{x}_1,\mathbf{x}_1^{'})=\sum_{a}\chi_a(\mathbf{x}_1)\chi_a^*(\mathbf{x}_1)
+\end{equation}
+\begin{equation}
+    \begin{split}
+        \gamma_{ij}^{HF}&=\delta_{ij}\quad i,j\in occupied\\
+        &=0\quad otherwise
+    \end{split}
+\end{equation}
+When $\Phi$ is not $\Psi_0$, the discrete representation of $\gamma^{HF}$ is not diagonal. However, we can define make it diagonal
+by using a new set of basis $\{\eta_i\}$ which is related to $\{\chi_i\}$ by a unitary transformation. This set of basis is called
+\textbf{natrual spin oribtals}
+\begin{equation}
+    \gamma(\mathbf{x}_1,\mathbf{x}_1^{'})=\sum_{i}\lambda_i\eta_i(\mathbf{x}_1)\eta_i^*(\mathbf{x}^{'}_1)
+\end{equation}
+where $\lambda_i$ is the element of the diagonal matrix $\mathbf{\lambda}$.
+\begin{equation}
+    \mathbf{\lambda=U^\dagger \gamma U}
+\end{equation}
+$\lambda_i$ is called occupation number of the natrual orbital $\{\eta_i\}$ in the wave function $\Phi$. And
+we find that only configurations constructed from natrual orbitals with large occupation numbers make significant
+contributions to the energy. It helps CI expansion converges rapidly.
+\subsection{Truncated CI and Size-consistency Problem}
+For our calculation result to be meaningful, it's necessary to use approximation that are good for molecules with
+different numbers of electrons. Let's consider a system consists of two non-interacting identical molecules. The energy
+of the dimer should be twice the energy of the single molecule. An approximation scheme for Calculating the energy of such
+a system that has this property is said to be \textbf{size consistent}. A more general definition is that the energy
+of a many-electron system, even in the presence of interactions, becomes proportional to the number of electrons in the
+limit $N\rightarrow\infty$.\\
+Full CI is size consistent but truncated CI is not. We use two minimal basis $H_2$ model that are separated by a large distance
+to make it quantitative. The Hartree-Fock wavefunction is
+\begin{equation}
+    \ket{\Psi_0}=\ket{1_1\bar{1}_1 1_2\bar{1}_2}
+\end{equation}
+Because the electron-electron integral involving both molecules is zero, so that the Hartree-Fock energy of the dimer is just
+twice the energy of one molecule
+\begin{equation}
+    {}^2E_0=2(2\epsilon_1-J_{11})
+\end{equation}
+Then we consider the double excited CI calculation, the expansion is
+\begin{align}
+    \ket{\Phi_0}&=\ket{\Psi_0}+c_1\ket{2_1\bar{2}_1 1_2\bar{1}_2}+c_2\ket{1_1\bar{1}_1 2_2\bar{2}_2}\notag\\
+    &=\ket{\Psi_0}+\sum_{i=1}^{2}c_i\ket{\Psi_{1_i,\bar{1}_i}^{2_i,\bar{2}_i}}
+\end{align}
+we can simply obatin the correlation energy of the dimer
+\begin{equation}
+    {}^2E_{corr}=\Delta-{(\Delta^2-2K_{12}^2)}^{1/2}
+\end{equation}
+The correlation energy of a single molecule is  
+\begin{equation}
+    {}^1E_{corr}=\Delta-{(\Delta^2-K_{12}^2)}^{1/2}
+\end{equation}
+Thus doubly excited CI is not size consistent. Moreover, DCI deteriorates as the size of the system increase, the
+correlation energy of N non-interacting $H_2$ molecules is
+\begin{equation}
+    {}^N E_{corr}=\Delta-{(\Delta^2-NK_{12}^2)}^{1/2}
+\end{equation}
+which means the correlation energy per molecule vanishes in the limit of large $N$
+\begin{equation}
+    \lim_{N \to \infty} \frac{{}^N E_{corr}}{N}=0
+\end{equation}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}

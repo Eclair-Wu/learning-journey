@@ -1,0 +1,321 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,braket,booktabs,longtable}
+\title{Eletronic Structure Theory Notes (DFT)}
+\author{Yixuan Wu}
+\begin{document}
+\maketitle
+\section{KSDFT}
+\subsection{introduction}
+The Kohn—Sham DFT is to replace the difficult interacting many-body system with an auxiliary system that can be solved
+easily. Kohn and Sham choose a non interacting system to be the ansatz. This leads to independent-particle equations with
+all the difficult many-body terms incorporated into an \textbf{exchange-correlation functional of the density}. By solving
+the equations we can find the ground-state energy and density of the original interacting system with the accuracy limited
+only by the approximations in the exchange-correlation functional.\\
+The auxiliary hamiltonian is chosen to have kinetic operator and an effective local potential $V_{eff}^\sigma(\mathbf{r})$
+acting on an electron of spin $\sigma$ at point $\mathbf{r}$. The density can be written as
+\begin{equation}
+    n(\mathbf{r})=\sum_{\sigma}\sum_{i=1}^{N^\sigma}{\lvert\psi_i^\sigma(\mathbf{r})\rvert}^2
+\end{equation}
+and the ground state energy is
+\begin{equation}
+    E_{KS}=T_s[n]+\int\,d\mathbf{r}V_{ext}(\mathbf{r})n(\mathbf{r})+E_{Hartree}[n]+E_{nu}+E_{xc}[n]
+\end{equation}
+$T_s$ is the independent-particle kinetic energy
+\begin{equation}
+    T_s=-\frac{1}{2}\sum_{\sigma}\sum_{i=1}^{N^\sigma}\bra{\psi_i^\sigma}\nabla^2\ket{\psi_i^\sigma}=\frac{1}{2}\sum_{\sigma}\sum_{i=1}^{N^\sigma}\int\,d\mathbf{r}{\lvert\nabla\psi_i^\sigma\rvert}^2
+\end{equation}
+$E_{Hartree}$ is the classical Coulomb interaction energy
+\begin{equation}
+    E_{Hartree}=\frac{1}{2}\int\,d\mathbf{r}d\mathbf{r^{'}}\frac{n(\mathbf{r})n(\mathbf{r^{'}})}{\lvert\mathbf{r-r^{'}}\rvert}
+\end{equation}
+$V_{ext}(\mathbf{r})$ is the external potential due to the nuclei and any other external fields and $E_{nu}$ is the interaction
+between the nuclei.\\
+$E_{xc}$ includes all many-body effects of correlation and exchange, it can be written as 
+\begin{equation}
+    E_{xc}=\braket{T}-T_s[n]+\braket{V_{int}}-E_{Hartree}[n]
+\end{equation}
+\subsection{variational equations}
+The solution can be viewed as the problem of minimization with respect to either the density or the effective potential. However,
+since $T_s$ depends on the orbitals and other terms depend on density, we first use the chain rule to derive the variational equation
+\begin{equation}
+    \frac{\delta E_{ks}}{\delta\psi_i^{\sigma*}(\mathbf{r})}=\frac{\delta T_{s}}{\delta\psi_i^{\sigma*}(\mathbf{r})}+\bigg[\frac{\delta E_{ext}}{\delta n(\mathbf{r},\sigma)}+\frac{\delta E_{Hartree}}{\delta n(\mathbf{r},\sigma)}+\frac{\delta E_{xc}}{\delta n(\mathbf{r},\sigma)}\bigg]\frac{\delta n(\mathbf{r},\sigma)}{\delta\psi_i^{\sigma*}(\mathbf{r})}=0
+\end{equation}
+subject to the orthonormalization constraints.\\
+We can simplify the equation by
+\begin{align}
+    \frac{\delta T_{s}}{\delta\psi_i^{\sigma*}(\mathbf{r})}&=-\frac{1}{2}\nabla^2\psi_i^\sigma\\
+    \frac{\delta n(\mathbf{r},\sigma)}{\delta\psi_i^{\sigma*}(\mathbf{r})}&=\psi_i^\sigma(\mathbf{r})
+\end{align}
+now the we can obatin a new equation called Kohn—Sham equation
+\begin{equation}
+    (H^\sigma_{KS}-\epsilon_i^\sigma)\psi_i^\sigma=0
+\end{equation}
+where $\epsilon_i$ is the eigenvalue and $H^\sigma_{KS}$ is the effective hamiltonian
+\begin{equation}
+    \begin{split}
+        H^\sigma_{KS}=&-\frac{1}{2}\nabla^2+\frac{\delta E_{ext}}{\delta n(\mathbf{r},\sigma)}+\frac{\delta E_{Hartree}}{\delta n(\mathbf{r},\sigma)}+\frac{\delta E_{xc}}{\delta n(\mathbf{r},\sigma)}\\
+        =&-\frac{1}{2}\nabla^2+V_{ext}(\mathbf{r})+V_{Hartree}(\mathbf{r})+V_{xc}^\sigma(\mathbf{r})\\
+        =&-\frac{1}{2}\nabla^2+V_{KS}^\sigma(\mathbf{r})
+    \end{split}
+\end{equation}
+\subsection{exchange-correlation functional}
+By seperating out the kinetic energy and the long-range Hartree terms, the remaining exchange-correlation functional can be approximated as
+a local or nearly local functional of density
+\begin{equation}
+    E_{xc}[n]=\int\,d\mathbf{r}n(\mathbf{r})\epsilon_{xc}([n],\mathbf{r})
+\end{equation}
+where $\epsilon_{xc}$ is an energy per electron at point $\mathbf{r}$ that depends only upon the density in some neighborhood of point $\mathbf{r}$.
+
+\section{Basic Concepts}
+\subsection{crystal}
+\begin{gather}
+    \text{crystal structure}=\text{Bravais lattice}+\text{basis}\\
+    \text{(basis: positions and types of atom in the primitive cell)}\notag\\
+    \text{space group}=\text{translation group}+\text{point group}
+\end{gather}
+The translation can be written as
+\begin{align}
+    \textbf{T(n)}=n_1\textbf{a}_1+n_2\textbf{a}_2+\cdots+n_d\textbf{a}_d\\
+    \text{(d is the dimension of space)}\notag 
+\end{align}
+The Wigner-Seitz cell is bounded by planes that are perpendicular bisectors of the translation vectors from the central lattice point.
+It's independent of the choice of the primitive translation.
+It's useful because it's a unique cell defined as the set of all points closer to the central point and remain the symmtery of the Bravais
+lattice.\\
+The primitive vectors can be written as a saqure matrix $\mathbf{a}(a_{ij})$, where j denotes the component and i the primitive vector. And the volume
+of the primitive cell is
+\begin{equation}
+    V=\det{\mathbf{a}}
+\end{equation}
+We can also defind the atom position vector $\tau_n$ where $n$ is the number of atoms in a primitive cell. We can also define it by lattice vector
+\begin{equation}
+    \tau_n=\sum_{i=1}^{d}\tau^l_{ni}\mathbf{a}_i
+\end{equation}
+\subsection{reciprocal and Brillouin zone}
+Consider if we have a function defind for the crystal, it must satisfy
+\begin{equation}
+    f(\mathbf{r})=f(\mathbf{r+T(n)})
+\end{equation}
+so the function can be represented by Fourier transforms:
+\begin{equation}
+    \begin{split}
+        f(\mathbf{q})&=\frac{1}{V_{crystal}}\int_{V_{crystal}}\,d\mathbf{r}f(\mathbf{r})e^{i\mathbf{qr}}\\
+        &=\frac{1}{V_{crystal}}\sum_{n_1,n_2,\cdots}\int_{V_{cell}}\,d\mathbf{r}f(\mathbf{r})e^{i\mathbf{q(r+T(n))}}\\
+        &=\frac{1}{N_{cell}}\sum_{n_1,n_2,\cdots}e^{i\mathbf{qT(n)}}\frac{1}{V_{cell}}\int_{V_{cell}}\,d\mathbf{r}f(\mathbf{r})e^{i\mathbf{qr}}
+    \end{split}
+\end{equation}
+where ${V_{crystal}}$ is a large volume of crystal composed of $N_{cell}=N_1\times N_2\times\cdots$ cells and $\mathbf{q}$ is the wavevector.
+They must satisfy the Born-Von periodic boundary conditions in each of the dimension:
+\begin{gather}
+    e^{i\mathbf{q}N_1\mathbf{a}_1}=e^{i\mathbf{q}N_2\mathbf{a}_2}=\cdots=1\\
+    \mathbf{qa}_i=2k\pi/N_i\quad(k=integer)
+\end{gather} 
+and the sum over all lattice points in equation (18) vanishes for $\mathbf{q}$ except those $\mathbf{qT}=2k\pi$ for all $\mathbf{T}$, so if must
+follow that $\mathbf{qa}_i=2k\pi(k=integer)$. This set of $\mathbf{q}$ is called \textbf{reciprocal lattice} and noted as $\mathbf{G}$. We define 
+a new set of vectors:
+\begin{equation}
+    \mathbf{b}_i\mathbf{a}_1=2\pi\delta_{ij}
+\end{equation}
+which satisfy
+\begin{equation}
+    \mathbf{G(m)}=m_1\textbf{b}_1+m_2\textbf{b}_2+\cdots+m_d\textbf{b}_d
+\end{equation}
+and equation (18) can be written as
+\begin{equation}
+    f(\mathbf{q})=\frac{1}{V_{cell}}\int_{V_{cell}}\,d\mathbf{r}f(\mathbf{r})e^{i\mathbf{qr}}
+\end{equation}
+By the matirx notation we have
+\begin{equation}
+    \mathbf{b}^{T}\mathbf{a}=2\pi\mathbf{I}
+\end{equation}
+and the volume of the reciprocal lattice, also called the first Brillouin zone is
+\begin{equation}
+    V_{BZ}=\det{\mathbf{b}}=\frac{{(2\pi)}^d}{V_{cell}}
+\end{equation}
+Inmitating the defination of $\tau$, we can define the vector in reciprocal space
+\begin{equation}
+    k_n=\sum_{i=1}^{d}k_{ni}^l\mathbf{b}_i
+\end{equation}
+in matrix form it becomes
+\begin{equation}
+    \mathbf{k}=\mathbf{k}^l\mathbf{b}
+\end{equation}
+To find the nearest neighbors in real space or the lowest components in the reciprocal space within a cutoff radius, $\mathbf{T}(n_1,n_2,n_3)$ is
+stricted by $N_1,N_2,N_3$:
+\begin{gather}
+    -N_i \leq  n_i\leq N_i \quad(i=1,2,3)\\
+    N_i=\frac{\lvert\mathbf{b}_i\rvert}{2\pi}R_{max}\quad(i=1,2,3)\\
+    M_i=\frac{\lvert\mathbf{a}_i\rvert}{2\pi}G_{max}\quad(i=1,2,3)
+\end{gather}
+\subsection{Excitations and the Bloch theorem}
+The above discussion is all about the periodic function in crystal, but excitations of the crystal don't have periodicity.
+Consier an operator defined for the periodic system, it must be invariant to any $\mathbf{T(n)}$. The signle-particle hamiltonian
+$\hat{H}$ is an example. We define a translation operator $\hat{\mathbf{T}}_n$
+\begin{equation}
+    \hat{\mathbf{T}}_n\psi(\mathbf{r})=\psi(\mathbf{r+T(n)})=t_n\psi(\mathbf{r})
+\end{equation}
+and it commutes with the hamiltonian
+\begin{equation}
+    \hat{\mathbf{T}}_n\hat{\mathbf{H}}=\hat{\mathbf{H}}\hat{\mathbf{T}}_n
+\end{equation}
+Now we talk about the eigenvalue of the operators
+\begin{gather}
+    \hat{\mathbf{T}}_{\mathbf{n}_1}\hat{\mathbf{T}}_{\mathbf{n}_2}=\hat{\mathbf{T}}_{\mathbf{n}_1+\mathbf{n}_2}\\
+    \hat{\mathbf{T}}_{\mathbf{n}_1+\mathbf{n}_2}\psi(\mathbf{r})=t_{\mathbf{n}_1}t_{\mathbf{n}_2}\psi(\mathbf{r})
+\end{gather} 
+we break the translation into the product of the primitive translations
+\begin{gather}
+    t_{\mathbf{n}}={t(\mathbf{a}_1)}^{n_1}{t(\mathbf{a}_2)}^{n_2}\cdots
+\end{gather} 
+since the $t(\mathbf{a})$ must be unity and satisfy the boundary condition
+\begin{gather}
+    t(\mathbf{a})=e^{i2\pi y_i} \qquad {t(\mathbf{a})}^{N_i}=1
+\end{gather}
+we can derive
+\begin{gather}
+    t_{\mathbf{n}}=e^{i\mathbf{kT_n}}\\
+    \mathbf{k}=\sum_{i=1}^{d}\frac{k_i}{N_i}\mathbf{b}_i
+\end{gather}
+Now we have the Bloch theorem
+\begin{equation}
+    {\mathbf{T}}_n\psi(\mathbf{r})=e^{i\mathbf{kT_n}}\psi(\mathbf{r})
+\end{equation}
+the eigenstates of any periodic hamiltonian can be chosen with definite values of $\mathbf{k}$, and the eigenfunction is
+\begin{equation}
+    \psi_{\mathbf{k}}(\mathbf{r})=e^{i\mathbf{kr}}u_{\mathbf{k}}(\mathbf{r})
+\end{equation}
+so the hamiltonian equation can be written as
+\begin{equation}
+    e^{-i\mathbf{kr}}\hat{H}e^{i\mathbf{kr}}u_{i,{\mathbf{k}}}(\mathbf{r})=\epsilon_{i,k}u_{i,{\mathbf{k}}}(\mathbf{r})
+\end{equation}
+In the limit of a large crystal, the spacing of the $\mathbf{k}$ points goes to zero and $\mathbf{k}$ can be considered a continuous variable. For 
+each $\mathbf{k}$ there is a discrete set of eigenstates $\{\epsilon_{i,k}\}$ which leads to band of eigenvalues.\\
+For many properties, it's essential to sum over the states labeled by $\mathbf{k}$. If we choose the eigenfunctions in a large crystal, there is exactly
+one value $\mathbf{k}$ for each cell, and the average value per cell can becomes
+\begin{equation}
+    \bar{f_i}=\frac{1}{N_k}\sum_{\mathbf{k}}f_i(\mathbf{k})
+\end{equation}
+where i denotes any of the discrete set of states at each $\mathbf{k}$. By taking the limit of a continuous variable
+in Fourier space with a volume per $\mathbf{k}$ point of $\frac{V_{BZ}}{N_k}$, the sum is converted to an integral
+\begin{equation}
+    \bar{f_i}=\frac{1}{V_{BZ}}\int_{BZ}\,d\mathbf{k}f_i(\mathbf{k})=\frac{V_{cell}}{{2\pi}^d}\int_{BZ}\,d\mathbf{k}f_i(\mathbf{k})
+\end{equation}
+There is an additional symmtery in the system with no magnetic field, the hamiltonian is invariant to time reversal.
+So we need to calculate states at both $\mathbf{k}$ and $-\mathbf{k}$ in crystal, $\psi_{i,-\mathbf{k}}$ can always be
+chosen  $\psi^*_{i,-\mathbf{k}}$.
+\subsection{point symmtery}
+Now we can consider the point symmteries which include rotations, inversions reflections and some non-symmorphic operations.
+Such operations form a group$\{R_n,n=1,\ldots,N_{group}\}$, their operation on any function of the system such as electron density is
+\begin{equation}
+    R_n g(\mathbf{r})=g(R_n\mathbf{r}+\mathbf{t}_n)
+\end{equation}
+where $R_n$ is the symmorphic operation and $\mathbf{t}_n$ is the non-symmorphic operation. By applying them to the SE it leads to a
+new equation $\mathbf{r}\rightarrow R_n\mathbf{r}+\mathbf{t}_n$ and $\mathbf{k}\rightarrow R_n\mathbf{k}$ because $\mathbf{t}_n$ has no
+effect on reciprocal space.
+\begin{equation}
+    \psi^{R_i\mathbf{k}}(R_i\mathbf{r}+\mathbf{t}_i)=\psi^{\mathbf{k}}(\mathbf{r})
+\end{equation}
+They have the same eigenvalue $\epsilon_{i}^{\mathbf{k}}$.\\
+At high symmtery k points $(\mathbf{k}\equiv R_n\mathbf{k})$, the eigenvectors can be classified according to the group representations. And
+we can define the irreducible Brillouin zone which is the smallest fraction of the BZ that is sufficient to determine all the information on
+the excitations of the crystal. All other k points outside the IBZ are related by the symmtery operations.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
