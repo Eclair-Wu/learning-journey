@@ -1,6 +1,7 @@
 import numpy as np
 import pyscf
 from itertools import combinations
+
 def int_mo(h1e,h2e,c_final):#transform h1e h2e in mo
     h1e_mo=c_final.T@h1e@c_final
     h2e_mo=h2e
@@ -54,35 +55,6 @@ def casci(N,act_mo,N_a,N_b,h1e_mo,h2e_mo):
             mtx[i,j]=mtx_ele(config[i],config[j],h1e_mo,h2e_mo,inactive)
     return mtx
 
-def david(h1e_mo,h2e_mo,K,N):#only solve few eigenvalues, not save all matrix elements 
-    config=[]
-    orb=np.linspace(0,2*K-1,2*K,dtype=np.int64)
-    for a in combinations(orb,N):
-        config.append(set(a))
-    non_zero=[]
-    a=np.zeros(len(config))
-    for i in range(len(config)):
-        a[i]=mtx_ele(config[i],config[i],h1e_mo,h2e_mo)
-        for j in range(len(config)):
-            if len(config[i]^config[j])>4:
-                continue
-            else:
-                non_zero.append(np.array([i,j]))
-
-    def aop (x):
-        x_new=np.zeros_like(x)
-        for ele in non_zero:   
-            i=ele[0]
-            j=ele[1]
-            x_new[i]+=mtx_ele(config[i],config[j],h1e_mo,h2e_mo)*x[j]
-        return x_new
-    def precond(dx, e, x0): 
-        dx=aop(x0)-e*(x0)
-        dx=dx/(a-e)
-        return dx
-    x0=None
-    e=pyscf.lib.davidson(aop,x0,precond)[0]
-    print(e)
 
 def slt_cd_1(config,h1e_mo,h2e_mo):
     o1=0

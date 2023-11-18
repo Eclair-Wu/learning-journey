@@ -1,52 +1,57 @@
 import numpy as np
 import scipy as sp
 
-def calc_f_r(P,h1e,h2e,K):
-    G=(h2e - 1/2 * h2e.transpose(0, 3, 2, 1)).reshape(K**2, K**2) @ P.ravel()
-    F = G.reshape(K, K)+h1e
+
+class HF:
+    def __init__(self, e1, e2, s, nuc, n, k):
+        self.ao1e = e1
+        self.ao2e = e2
+        self.ovlp = s
+        self.enuc = nuc
+        self.nele = n
+        self.nbas = k
+
+    def fock(self, P):
+        F = self.ao1e + np.einsum('kl,ijkl -> ij', P, self.ao2e) - \
+            np.einsum('kl,ikjl->ij', P, self.ao2e*1/2)
     return F
 
-def tran_f(F,X):#organization of eigenvalues and eigenvectors
-    F_new=X@F@X.T
-    dia=sp.linalg.eigh(F_new)
-    C_trans=dia[1]
-    C=X@C_trans
-    Orbital_e=dia[0]
-    return C,Orbital_e
+    def tran_f(F):
+        X = np.linalg.fractional_matrix_power(self.ovlp, -0.5)
+        F_new = X@F@X.T
+        e, C_trans = sp.linalg.eigh(F_new)
+        C = X@C_trans
+    return C, e
 
-def conv(P,P_new,K,delta):#use RMDS to judge convergence    
-    judge=np.sqrt(np.sum(np.square(P_new-P)))/K
-    if judge>delta:
+    def conv(self, P, P_new, delta):
+        judge = np.sqrt(np.sum(np.square(P_new-P)))/self.nbas
+    if judge > delta:
         return False
     else: 
         return True
 
-def SCF_rhf(h1e,h2e,S,Nuc_replus,K,N,P,maxcycle=30):
-    iter=0
-    X=np.linalg.fractional_matrix_power(S,-0.5)
-    while iter<maxcycle:
-        F=calc_f_r(P,h1e,h2e,K)
-        C=tran_f(F,X)[0]
-        P_new=C[:,:N//2] @ C[:,:N//2].T+0.5*P
-        if(conv(P,P_new,K,1e-6)):
-            F_final=calc_f_r(P_new,h1e,h2e,K)
-            print(F_final)
-            C_final=tran_f(F_final,X)[0]
-            E_0=1/2*np.sum(P_new*(h1e+F_final))+Nuc_replus
-            print('SCF done')
-            print('HF_energy_final:',E_0)
-            break
+    def SCF_rhf(self, N, P, maxcycle=30, delta=1e-6):
+        iter = 0
+        while iter < maxcycle:
+            F = self.fock(P)
+            C, e = tran_f(F)
+            P_new = 2*C[:, :N//2] @ C[:, :N//2].T
+            if (conv(P, P_new, delta)):
+                F_final = self.fock(P_new)
+                E_0 = 1/2*np.sum(P_new*(self.ao1e+F_final))+self.enuc
+                print('SCF done')
+                print('HF_energy_final:', E_0)
+                break
+            else:
+                P = 2 * C[:, :N//2] @ C[:, :N//2].T
+                iter += 1
+                E_0 = 1/2*np.sum(P*(self.ao1e+F))+self.enuc
+                print('iteration:', iter)
+                print('HF_energy:', E_0)
+        if iter == maxcycle:
+            print('not converge')
         else:
-            P=2 * C[:, :N//2] @ C[:, :N//2].T
-            iter+=1
-            E_0=1/2*np.sum(P*(h1e+F))+Nuc_replus
-            print('iteration:',iter)
-            print('HF_energy:',E_0)
-    if iter==maxcycle:
-         print('not converge')
-         output={'energy':E_0,'p':P}
-    else:    
-        output={'coefficent':C_final,'energy':E_0,'p':P_new}
+            output = {'energy': E_0, 'Orbital energy': e}
     return output
 
 def calc_f_u(P,P_a,P_b,h2e,h1e,K):
